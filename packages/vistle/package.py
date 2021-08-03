@@ -5,7 +5,7 @@
 
 from spack import *
 
-from spack.pkg.builtin.opencover import HlrsCMakePackage
+from .opencover import HlrsCMakePackage
 
 class Vistle(HlrsCMakePackage):
     """Vistle is a tool for visualization of scientific data in VR.

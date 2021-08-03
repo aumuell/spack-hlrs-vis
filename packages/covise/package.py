@@ -5,7 +5,7 @@
 
 from spack import *
 
-from spack.pkg.builtin.opencover import Opencover
+from .opencover import Opencover
 
 
 class Covise(Opencover):
