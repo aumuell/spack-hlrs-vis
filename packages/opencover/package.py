@@ -148,6 +148,7 @@ class Opencover(HlrsCMakePackage):
     variant('x11', default=not platform=='darwin', description='Use X11 Window system')
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
     variant('embree', default=False, description='Interactive spray simulation')
+    variant('ffmpeg', default=False, description='Video output recording')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
 
@@ -174,7 +175,7 @@ class Opencover(HlrsCMakePackage):
 
     #depends_on('cfitsio', when='+virvo')
 
-    depends_on('ffmpeg')
+    depends_on('ffmpeg', when='+ffmpeg')
     depends_on('embree', when='+embree')
 
     depends_on('zlib')
