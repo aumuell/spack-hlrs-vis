@@ -81,7 +81,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('glew', when='+osg')
     depends_on('glu', when='+osg')
 
-    depends_on('jpeg', when='+rr')
+    depends_on('jpeg', when='+embree')
     depends_on('embree+ispc', when='+embree')
     depends_on('ispc', when='+embree', type='build')
 
