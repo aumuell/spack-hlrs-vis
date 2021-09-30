@@ -42,7 +42,7 @@ class Covise(Opencover):
     depends_on('vtk', when='+vtk')
 
     depends_on('assimp', when='+assimp')
-    depends_on('hdf5', when='+hdf5')
+    depends_on('hdf5')
 
     depends_on('libmicrohttpd')
     #depends_on('coin3d')
