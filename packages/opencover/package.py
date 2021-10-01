@@ -65,7 +65,7 @@ class HlrsCMakePackage(CMakePackage):
         'Faro': None,
         'JT': None,
         'SISL': None,
-        'E57': None,
+        'E57': 'libe57',
         'OVR': None,
         'OsgEphemeris': None,
         'SLAM6D': None,
@@ -109,11 +109,13 @@ class HlrsCMakePackage(CMakePackage):
         'SoQt': None,
         'CFX': None,
         'Abaqus': None,
+        'ABAQUS': None,
         'ITK': 'itk',
         'BIFBOF': None,
         'Bullet': None,
         'Xenomai': None,
         'CAL3D': None,
+        'IFCPP': None,
     }
 
     def cmake_disable_implicit_deps(self, args):
@@ -144,6 +146,9 @@ class Opencover(HlrsCMakePackage):
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
     version('master', branch='master', submodules=True)
+    version('2021.9', tag='v2021.9', submodules=True)
+    version('2021.7', tag='v2021.7', submodules=True)
+    version('2021.1', tag='v2021.1', submodules=True)
 
     variant('x11', default=not platform=='darwin', description='Use X11 Window system')
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
@@ -162,7 +167,7 @@ class Opencover(HlrsCMakePackage):
 
     depends_on('xerces-c')
     depends_on('curl')
-    depends_on('qt+opengl')
+    depends_on('qt+opengl+webkit')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
@@ -171,7 +176,7 @@ class Opencover(HlrsCMakePackage):
     depends_on('mpi', when='+mpi')
 
     depends_on('boost')
-    #depends_on('tbb', when='+virvo')
+    depends_on('tbb', when='+visionaray')
 
     #depends_on('cfitsio', when='+virvo')
 
@@ -182,6 +187,7 @@ class Opencover(HlrsCMakePackage):
     depends_on('libpng')
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
+    depends_on('libe57')
 
     #depends_on('speex')
 
