@@ -22,27 +22,25 @@ class Covise(Opencover):
 
     provides('cover')
 
-    variant('vtk', default=False, description='Read VTK data')
-    variant('assimp', default=False, description='Read polygonal models in various formats')
-    variant('netcdf', default=False, description='Read WRFChem and other NetCDF based data formats')
+    variant('vtk', default=True, description='Read VTK data')
+    variant('assimp', default=True, description='Read polygonal models in various formats')
+    variant('hdf5', default=True, description='Read HDF5 based data formats')
 
     depends_on('git', type='build')
     depends_on('cmake@3.3:', type='build')
 
     depends_on('python@2.7:', type=('build', 'run'))
 
-    depends_on('netcdf-cxx4', when='+netcdf')
-
-    #depends_on('tbb')
+    depends_on('hdf5+cxx+hl', when='+hdf5')
+    depends_on('netcdf-cxx4', when='+hdf5')
+    depends_on('cgns', when='+hdf5')
 
     depends_on('libzip')
     depends_on('libarchive')
 
-    depends_on('cgns')
     depends_on('vtk', when='+vtk')
 
     depends_on('assimp', when='+assimp')
-    depends_on('hdf5')
 
     depends_on('libmicrohttpd')
     #depends_on('coin3d')
