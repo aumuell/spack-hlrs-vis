@@ -24,7 +24,7 @@ class Covise(Opencover):
 
     variant('vtk', default=True, description='Read VTK data')
     variant('assimp', default=True, description='Read polygonal models in various formats')
-    variant('hdf5', default=True, description='Read HDF5 based data formats')
+    variant('hdf5', default=True, description='Read CGNS, NetCDF and other HDF5 based data formats')
 
     depends_on('git', type='build')
     depends_on('cmake@3.3:', type='build')
