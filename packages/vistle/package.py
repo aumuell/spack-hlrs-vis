@@ -111,15 +111,6 @@ class Vistle(HlrsCMakePackage):
         args.append('-DVISTLE_PEDANTIC_ERRORS=OFF')
         args.append('-DCOVISE_ARCHSUFFIX=spack')
 
-        if '+python' in spec:
-            if spec.satisfies('^python@:2.99'):
-                args.extend([
-                    '-DVISTLE_USE_PYTHON2=ON'
-                ])
-            else:
-                args.extend([
-                    '-DVISTLE_USE_PYTHON2=OFF'
-                ])
         if '+multi' in spec:
             args.append('-DVISTLE_MULTI_PROCESS=ON')
         else:
