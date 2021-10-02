@@ -73,7 +73,7 @@ class HlrsCMakePackage(CMakePackage):
         'PHYSX': None,
         'CUDPP': None,
         'JSBSIM': None,
-        'OPENCRG': None,
+        'OPENCRG': 'opencrg',
         'LAMURE': None,
         'Schism': None,
         'MidiFile': None,
@@ -188,6 +188,8 @@ class Opencover(HlrsCMakePackage):
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
     depends_on('libe57')
+
+    depends_on('opencrg')
 
     #depends_on('speex')
 
