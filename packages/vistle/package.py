@@ -56,7 +56,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('mpi')
     depends_on('botan')
     depends_on('boost@1.59:')
-    depends_on('boost+pic')
+    depends_on('boost+pic', when='+static')
 
     depends_on('netcdf-cxx4', when='+netcdf')
 
