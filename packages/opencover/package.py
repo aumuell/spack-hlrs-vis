@@ -132,23 +132,49 @@ class HlrsCMakePackage(CMakePackage):
 
 
 
-
-class Opencover(HlrsCMakePackage):
-    """Collaborative Visualization and Simulation Environment"""
-
-    homepage = "https://www.hlrs.de/opencover"
+class HlrsCovisePackage(HlrsCMakePackage):
     git      = "https://github.com/hlrs-vis/covise.git"
-
-    maintainers = ['aumuell']
-
-    provides('cover')
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
     version('master', branch='master', submodules=True)
+    version('2021.10', commit='a7efd685a62f955daa6902737db8b73c02b10c96', submodules=True)
     version('2021.9', tag='v2021.9', submodules=True)
     version('2021.7', tag='v2021.7', submodules=True)
     version('2021.1', tag='v2021.1', submodules=True)
+
+    maintainers = ['aumuell']
+
+    depends_on('git', type='build')
+    depends_on('cmake@3.3:', type='build')
+
+    def setup_build_environment(self, env):
+        """Remove environment variables that let CMake find packages outside the spack tree."""
+        env.set('ARCHSUFFIX','spack')
+        env.unset('EXTERNLIBS')
+        env.unset('COVISEDIR')
+        env.unset('COVISEDESTDIR')
+        env.unset('COVISE_PATH')
+
+    def cmake_covise_args(self):
+        """Populate cmake arguments for COVISE packages."""
+
+        args = []
+
+        args.append('-DCOVISE_WARNING_IS_ERROR=OFF')
+        args.append('-DCOVISE_CPU_ARCH:STRING=')
+        args.append('-DARCHSUFFIX:STRING=spack')
+
+        return args
+
+
+
+class Opencover(HlrsCovisePackage):
+    """Collaborative Visualization and Simulation Environment"""
+
+    homepage = "https://www.hlrs.de/opencover"
+
+    provides('cover')
 
     variant('x11', default=not platform=='darwin', description='Use X11 Window system')
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
@@ -156,8 +182,6 @@ class Opencover(HlrsCMakePackage):
     variant('ffmpeg', default=False, description='Video output recording')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
-
-    depends_on('cmake@3.3:', type='build')
 
     depends_on('python@2.7:', type=('build', 'run'))
 
@@ -193,32 +217,19 @@ class Opencover(HlrsCMakePackage):
 
     #depends_on('speex')
 
-    def setup_build_environment(self, env):
-        """Remove environment variables that let CMake find packages outside the spack tree."""
-        env.set('ARCHSUFFIX','spack')
-        env.unset('EXTERNLIBS')
-        env.unset('COVISEDIR')
-        env.unset('COVISEDESTDIR')
-        env.unset('COVISE_PATH')
 
-
-    def cmake_covise_args(self):
-        """Populate cmake arguments for COVISE."""
+    def cmake_opencover_args(self):
+        """Populate cmake arguments for OpenCOVER."""
 
         spec = self.spec
 
-        args = [
-            self.define_from_variant('COVISE_USE_VIRVO', 'virvo'),
-            self.define_from_variant('COVISE_USE_VISIONARAY', 'visionaray'),
-            self.define_from_variant('COVISE_USE_X11', 'x11'),
-        ]
+        args = HlrsCovisePackage.cmake_covise_args(self)
 
-        args.append('-DCOVISE_WARNING_IS_ERROR=OFF')
+        args.append(self.define_from_variant('COVISE_USE_VIRVO', 'virvo')),
+        args.append(self.define_from_variant('COVISE_USE_VISIONARAY', 'visionaray')),
+        args.append(self.define_from_variant('COVISE_USE_X11', 'x11')),
 
-        args.append('-DCOVISE_CPU_ARCH:STRING=')
-        args.append('-DARCHSUFFIX:STRING=spack')
-
-        return self.cmake_disable_implicit_deps(args)
+        return args
 
 
     def cmake_args(self):
@@ -226,7 +237,7 @@ class Opencover(HlrsCMakePackage):
 
         spec = self.spec
 
-        args = self.cmake_covise_args()
+        args = self.cmake_opencover_args()
 
         args.append('-DCOVISE_BUILD_ONLY_COVER=ON')
 

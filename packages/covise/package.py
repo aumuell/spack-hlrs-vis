@@ -12,22 +12,12 @@ class Covise(Opencover):
     """Collaborative Visualization and Simulation Environment"""
 
     homepage = "https://www.hlrs.de/covise"
-    git      = "https://github.com/hlrs-vis/covise.git"
-
-    maintainers = ['aumuell']
-
-    # FIXME: Add proper versions and checksums here.
-    # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('master', branch='master', submodules=True)
 
     provides('cover')
 
     variant('vtk', default=True, description='Read VTK data')
     variant('assimp', default=True, description='Read polygonal models in various formats')
     variant('hdf5', default=True, description='Read CGNS, NetCDF and other HDF5 based data formats')
-
-    depends_on('git', type='build')
-    depends_on('cmake@3.3:', type='build')
 
     depends_on('python@2.7:', type=('build', 'run'))
 
@@ -47,11 +37,11 @@ class Covise(Opencover):
     #depends_on('openssl')
     depends_on('gdal')
     depends_on('libgeotiff')
-    depends_on('proj@:8.99')
+    depends_on('proj@:7.99')
 
     def cmake_args(self):
         """Populate cmake arguments for COVISE."""
 
-        args = Opencover.cmake_covise_args(self)
+        args = Opencover.cmake_opencover_args(self)
 
-        return args
+        return self.cmake_disable_implicit_deps(args)
