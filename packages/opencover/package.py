@@ -49,7 +49,7 @@ class HlrsCMakePackage(CMakePackage):
         'HIDAPI': None,
         'Alut': None,
         'OpenVR': None,
-        'PCL': None,
+        'PCL': 'pcl',
         'LibVncServer': None,
         'NVML': None,
         'VRPN': None,
@@ -116,6 +116,7 @@ class HlrsCMakePackage(CMakePackage):
         'Xenomai': None,
         'CAL3D': None,
         'IFCPP': None,
+        'FFTW': 'fftw',
     }
 
     def cmake_disable_implicit_deps(self, args):
@@ -181,6 +182,7 @@ class Opencover(HlrsCovisePackage):
     variant('embree', default=False, description='Interactive spray simulation')
     variant('ffmpeg', default=False, description='Video output recording')
     variant('virvo', default=True, description='Enable volume rendering')
+    variant('drivingsim', default=True, description='Enable driving simulator features')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
 
     depends_on('python@2.7:', type=('build', 'run'))
@@ -202,7 +204,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('boost')
     depends_on('tbb', when='+visionaray')
 
-    #depends_on('cfitsio', when='+virvo')
+    depends_on('cfitsio', when='+virvo')
 
     depends_on('ffmpeg', when='+ffmpeg')
     depends_on('embree', when='+embree')
@@ -212,8 +214,10 @@ class Opencover(HlrsCovisePackage):
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
     depends_on('libe57')
+    depends_on('pcl^hdf5+hl+cxx')
 
     depends_on('opencrg')
+    #depends_on('fftw')
 
     #depends_on('speex')
 
@@ -228,6 +232,7 @@ class Opencover(HlrsCovisePackage):
         args.append(self.define_from_variant('COVISE_USE_VIRVO', 'virvo')),
         args.append(self.define_from_variant('COVISE_USE_VISIONARAY', 'visionaray')),
         args.append(self.define_from_variant('COVISE_USE_X11', 'x11')),
+        args.append(self.define_from_variant('COVISE_BUILD_DRIVINGSIM', 'drivingsim')),
 
         return args
 
