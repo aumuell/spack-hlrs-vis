@@ -28,7 +28,7 @@ class Vistle(HlrsCMakePackage):
 
     variant('embree', default=True, description='Enable remote rendering')
     variant('python', default=True, description='Enable Python support')
-    variant('qt', default=True, description='Build graphical workflow editor relying ond Qt')
+    variant('qt', default=True, description='Build graphical workflow editor relying on Qt')
     variant('tui', default=True, description='Install interactive command line ineterface')
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
@@ -44,6 +44,7 @@ class Vistle(HlrsCMakePackage):
 
     variant('static', default=False, description='Do not build shared libraries')
     variant('dev', default=True, description='Install internal 3rd party dependencies for linking to Vistle')
+    variant('boostmpi', default=True, description='Do not use internal copy of Boost.MPI')
 
     conflicts('%gcc@:4.99')
     depends_on('cmake@3.3:', type='build')
@@ -57,6 +58,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('botan')
     depends_on('boost@1.59:')
     depends_on('boost+pic', when='+static')
+    depends_on('boost+mpi', when='+boostmpi')
 
     depends_on('netcdf-cxx4', when='+netcdf')
 
@@ -111,31 +113,24 @@ class Vistle(HlrsCMakePackage):
         args.append('-DVISTLE_PEDANTIC_ERRORS=OFF')
         args.append('-DCOVISE_ARCHSUFFIX=spack')
 
-        if '+multi' in spec:
-            args.append('-DVISTLE_MULTI_PROCESS=ON')
-        else:
-            args.append('-DVISTLE_MULTI_PROCESS=OFF')
-
         if '+static' in spec:
             args.extend([
                 '-DVISTLE_BUILD_SHARED=OFF',
                 '-DVISTLE_MODULES_SHARED=OFF'
             ])
 
-        if '+double' in spec:
-            args.append('-DVISTLE_DOUBLE_PRECISION=ON')
+        if '+boostmpi' in spec:
+            args.append('-DVISTLE_INTERNAL_BOOST_MPI=OFF')
         else:
-            args.append('-DVISTLE_DOUBLE_PRECISION=OFF')
+            args.append('-DVISTLE_INTERNAL_BOOST_MPI=ON')
 
-        if '+large' in spec:
-            args.append('-DVISTLE_64BIT_INDICES=ON')
-        else:
-            args.append('-DVISTLE_64BIT_INDICES=OFF')
+        self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'),
+        self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'),
+        self.define_from_variant('VISTLE_64BIT_INDICES', 'large'),
+
+        self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'),
 
         if not '+qt' and not '+vr' in spec:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
-
-        if '+dev' in spec:
-            args.append('-DVISTLE_INSTALL_3RDPARTY=ON')
 
         return self.cmake_disable_implicit_deps(args)
