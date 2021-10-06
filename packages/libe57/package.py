@@ -37,6 +37,3 @@ class Libe57(CMakePackage):
         """Perform smoke tests on the installed package."""
         self.run_test('e57validate', [], [], installed=True,
                       purpose=reason, skip_missing=True, work_dir='.')
-  #test do
-  #  system "test -x #{bin}/e57validate"
-  #end
