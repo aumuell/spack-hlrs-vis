@@ -59,7 +59,7 @@ class HlrsCMakePackage(CMakePackage):
         'ARToolKit': None,
         'NATNET': None,
         'ZSPACE': None,
-        'OSGCAL': None,
+        'OSGCAL': 'osgcal',
         'OsgQt': None,
         'OsgEarth': None,
         'Faro': None,
@@ -114,7 +114,7 @@ class HlrsCMakePackage(CMakePackage):
         'BIFBOF': None,
         'Bullet': None,
         'Xenomai': None,
-        'CAL3D': None,
+        'CAL3D': 'cal3d',
         'IFCPP': None,
         'FFTW': 'fftw',
     }
@@ -217,6 +217,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('pcl^hdf5+hl+cxx')
 
     depends_on('opencrg')
+    depends_on('osgcal')
     #depends_on('fftw')
 
     #depends_on('speex')
