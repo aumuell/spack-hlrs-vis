@@ -124,11 +124,11 @@ class Vistle(HlrsCMakePackage):
         else:
             args.append('-DVISTLE_INTERNAL_BOOST_MPI=ON')
 
-        self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'),
-        self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'),
-        self.define_from_variant('VISTLE_64BIT_INDICES', 'large'),
+        args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
+        args.append(self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'))
+        args.append(self.define_from_variant('VISTLE_64BIT_INDICES', 'large'))
 
-        self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'),
+        args.append(self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'))
 
         if not '+qt' and not '+vr' in spec:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
