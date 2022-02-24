@@ -76,9 +76,9 @@ class Vistle(HlrsCMakePackage):
     depends_on('tinyxml2', when='+vtk')
 
     depends_on('assimp', when='+assimp')
-    depends_on('proj@:7.99', when='+proj')
 
     depends_on('gdal', when='+gdal')
+    depends_on('proj', when='+proj')
 
     depends_on('openscenegraph@3.4:', when='+osg')
     depends_on('glew', when='+osg')
