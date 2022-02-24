@@ -32,6 +32,7 @@ class Vistle(HlrsCMakePackage):
     variant('tui', default=True, description='Install interactive command line ineterface')
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
+    variant('pnetcdf', default=True, description='Enable reading of e.g. MPAS data')
     variant('osg', default=True, description='Build renderer relying on OpenSceneGraph')
     variant('vr', default=True, description='Build virtual environment render module based on OpenCOVER')
     variant('assimp', default=True, description='Enable reading of polygonal models (.obj, .stl, ...)')
@@ -61,6 +62,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('boost+mpi', when='+boostmpi')
 
     depends_on('netcdf-cxx4', when='+netcdf')
+    depends_on('parallel-netcdf', when='+pnetcdf')
 
     depends_on('tbb')
 
