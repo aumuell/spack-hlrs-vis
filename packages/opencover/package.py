@@ -181,6 +181,7 @@ class Opencover(HlrsCovisePackage):
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
     variant('embree', default=False, description='Interactive spray simulation')
     variant('ffmpeg', default=True, description='Video output recording')
+    variant('pcl', default=True, description='Enable reading of PCL point cloud files')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('drivingsim', default=True, description='Enable driving simulator features')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
@@ -214,7 +215,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
     depends_on('libe57')
-    depends_on('pcl^hdf5+hl+cxx')
+    depends_on('pcl^hdf5+hl+cxx', when='+pcl')
 
     depends_on('opencrg')
     depends_on('osgcal')
