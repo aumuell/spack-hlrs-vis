@@ -81,6 +81,7 @@ class Vistle(HlrsCMakePackage):
 
     depends_on('gdal', when='+gdal')
     depends_on('proj', when='+proj')
+    depends_on('proj@:7', when='+proj@:2021.10')
 
     depends_on('openscenegraph@3.4:', when='+osg')
     depends_on('glew', when='+osg')
