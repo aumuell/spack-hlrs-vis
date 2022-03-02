@@ -194,7 +194,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('xerces-c')
     depends_on('curl')
-    depends_on('qt+opengl+webkit')
+    depends_on('qt+opengl+webkit@5.12:')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
