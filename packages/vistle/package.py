@@ -93,8 +93,8 @@ class Vistle(HlrsCMakePackage):
     depends_on('embree+ispc', when='+embree')
     depends_on('ispc', when='+embree', type='build')
 
-    depends_on('qt@5', when='+qt')
-    depends_on('qt@5', when='+vr')
+    depends_on('qt', when='+qt')
+    depends_on('qt', when='+vr')
 
     depends_on('opencover+mpi@2021.9:', when='+vr')
 

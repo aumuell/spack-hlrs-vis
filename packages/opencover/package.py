@@ -12,7 +12,14 @@ class HlrsCMakePackage(CMakePackage):
 
     package_spec = {
         'Qt5Core': 'qt',
-        'Qt6Core': 'qt',
+        'Qt5Gui': 'qt+gui',
+        'Qt5Widgets': 'qt+gui',
+        'Qt5OpenGL': 'qt+opengl',
+        'Qt5WebEngine': 'qt+webkit',
+        'Qt5WebEngineCore': 'qt+webkit',
+        'Qt5WebKit': 'qt+webkit',
+        'Qt5WebView': 'qt+webkit',
+        'Qt6Core': 'qt-base',
         'cfitsio': 'cfitsio',
         'Boost': 'boost',
         'OPENSSL': 'openssl',
@@ -42,19 +49,20 @@ class HlrsCMakePackage(CMakePackage):
         'LAPACK': 'lapack',
         'OpenEXR': 'openexr',
         'CUDA': 'cuda',
+        'CUDAToolkit': 'cuda',
         'PythonLibs': 'python',
         'LibUSB1': 'libusb',
         'X11': 'libx11',
         'OpenCV': 'opencv',
         'GLUT': 'freeglut',
         'Cg': None,
-        'HIDAPI': None,
+        'HIDAPI': 'hidapi',
         'Alut': None,
         'OpenVR': None,
         'PCL': 'pcl',
         'LibVncServer': None,
         'NVML': None,
-        'VRPN': None,
+        'VRPN': 'vrpn',
         'Steereo': None,
         'FMOD': None,
         'WIRINGPI': None,
@@ -91,6 +99,7 @@ class HlrsCMakePackage(CMakePackage):
         'Teem': None,
         'GDCM': None,
         'Audiofile': None,
+        'OpenNURBS': 'opennurbs',
 
         #'PTHREAD': None,
 
@@ -106,6 +115,7 @@ class HlrsCMakePackage(CMakePackage):
         'CGNS': 'cgns',
         'HDF5': 'hdf5',
         'V8': None,
+        'CEF': None,
 
         'Revit': None,
         'Inventor': None,
@@ -120,6 +130,7 @@ class HlrsCMakePackage(CMakePackage):
         'CAL3D': 'cal3d',
         'IFCPP': None,
         'FFTW': 'fftw',
+        'Xdmf': 'xdmf3',
     }
 
     def cmake_disable_implicit_deps(self, args):
@@ -182,7 +193,10 @@ class Opencover(HlrsCovisePackage):
 
     variant('x11', default=not platform=='darwin', description='Use X11 Window system')
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
+    variant('qt5', default=True, description='Use Qt 5 instead of 6')
+    variant('cuda', default=False, description='Enable CUDA support')
     variant('embree', default=False, description='Interactive spray simulation')
+    variant('opencv', default=False, description='OpenCV plug-ins')
     variant('ffmpeg', default=True, description='Video output recording')
     variant('pcl', default=True, description='Enable reading of PCL point cloud files')
     variant('virvo', default=True, description='Enable volume rendering')
@@ -197,13 +211,15 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('xerces-c')
     depends_on('curl')
-    depends_on('qt+opengl+webkit@5.12:')
+    depends_on('qt+opengl@5.15:', when='+qt5')
+    depends_on('qt-base+network+opengl@6:', when='~qt5')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
     depends_on('libx11', when='+x11')
 
     depends_on('mpi', when='+mpi')
+    depends_on('cuda', when='+cuda')
 
     depends_on('boost')
     depends_on('tbb', when='+visionaray')
@@ -212,6 +228,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('ffmpeg', when='+ffmpeg')
     depends_on('embree', when='+embree')
+    depends_on('opencv', when='+opencv')
 
     depends_on('zlib')
     depends_on('libpng')
@@ -222,6 +239,10 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('opencrg')
     depends_on('osgcal')
+    depends_on('opennurbs')
+
+    depends_on('hidapi')
+    depends_on('vrpn')
     #depends_on('fftw')
 
     #depends_on('speex')
@@ -238,6 +259,8 @@ class Opencover(HlrsCovisePackage):
         args.append(self.define_from_variant('COVISE_USE_VISIONARAY', 'visionaray')),
         args.append(self.define_from_variant('COVISE_USE_X11', 'x11')),
         args.append(self.define_from_variant('COVISE_BUILD_DRIVINGSIM', 'drivingsim')),
+        args.append(self.define_from_variant('COVISE_USE_QT5', 'qt5')),
+        args.append(self.define_from_variant('COVISE_USE_CUDA', 'cuda')),
 
         return args
 
