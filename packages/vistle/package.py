@@ -53,6 +53,7 @@ class Vistle(HlrsCMakePackage):
     extends('python', when='+python')
 
     depends_on('python@2.7:', when='+python', type=('build', 'link', 'run'))
+    depends_on('py-installer', when='+python', type=('build'))
     depends_on('py-ipython', when='+tui', type=('run'))
 
     depends_on('mpi')
