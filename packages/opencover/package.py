@@ -100,6 +100,7 @@ class HlrsCMakePackage(CMakePackage):
         'LibArchive': 'libarchive',
         'LibZip': 'libzip',
         'NETCDF': 'netcdf-cxx4',
+        'PNETCDF': 'parallel-netcdf',
         'CGNS': 'cgns',
         'HDF5': 'hdf5',
         'V8': None,
