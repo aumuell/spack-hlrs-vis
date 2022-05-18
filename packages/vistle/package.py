@@ -57,6 +57,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('py-ipython', when='+tui', type=('run'))
 
     depends_on('mpi')
+    depends_on('hwloc')
     depends_on('botan')
     depends_on('boost+atomic+thread+exception+log+locale+math+random+timer+filesystem+date_time+program_options+serialization+system+iostreams@1.59:')
     depends_on('boost+pic', when='+static')
