@@ -11,6 +11,8 @@ class HlrsCMakePackage(CMakePackage):
     """Collaborative Visualization and Simulation Environment"""
 
     package_spec = {
+        'Qt5Core': 'qt',
+        'Qt6Core': 'qt',
         'cfitsio': 'cfitsio',
         'Boost': 'boost',
         'OPENSSL': 'openssl',
