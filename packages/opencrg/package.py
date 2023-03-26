@@ -22,7 +22,7 @@ class Opencrg(MakefilePackage):
     version('1.2.0',
             git = 'https://code.asam.net/simulation/standard/asam-opencrg.git',
             commit='21a9d1d6edfb87ad9b8ab51005c9063e7d44ae31')
-    version('1.1.2', tag='v1.1.2')
+    version('1.1.2', tag='v1.1.2', preferred=True)
     version('1.1.1', tag='v1.1.1')
     version('1.1.0-rc1', tag='v1.1.0-rc1')
     version('1.0.6', tag='v1.0.6')
