@@ -20,6 +20,8 @@ class Covise(Opencover):
     variant('hdf5', default=True, description='Read CGNS, NetCDF and other HDF5 based data formats')
 
     depends_on('python@2.7:', type=('build', 'run'))
+    #depends_on('qt@5.15:+opengl+webkit') # depends on Python 2, does not work in spack > 0.19
+    depends_on('qt@5.15:+opengl')
 
     depends_on('hdf5+cxx+hl', when='+hdf5')
     depends_on('netcdf-cxx4', when='+hdf5')
