@@ -29,10 +29,12 @@ class Vistle(HlrsCMakePackage):
     variant('embree', default=True, description='Enable remote rendering')
     variant('python', default=True, description='Enable Python support')
     variant('qt', default=True, description='Build graphical workflow editor relying on Qt')
+    variant('qt5', default=True, description='Build graphical workflow editor relying on Qt 5')
     variant('tui', default=True, description='Install interactive command line ineterface')
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
     variant('pnetcdf', default=True, description='Enable reading of e.g. MPAS data')
+    variant('xdmf', default=False, description='Enable reading of SeisSol data')
     variant('osg', default=True, description='Build renderer relying on OpenSceneGraph')
     variant('vr', default=True, description='Build virtual environment render module based on OpenCOVER')
     variant('assimp', default=True, description='Enable reading of polygonal models (.obj, .stl, ...)')
@@ -65,6 +67,7 @@ class Vistle(HlrsCMakePackage):
 
     depends_on('netcdf-cxx4', when='+netcdf')
     depends_on('parallel-netcdf', when='+pnetcdf')
+    depends_on('xdmf3', when='+xdmf')
 
     depends_on('tbb')
 
@@ -93,10 +96,13 @@ class Vistle(HlrsCMakePackage):
     depends_on('embree+ispc', when='+embree')
     depends_on('ispc', when='+embree', type='build')
 
-    depends_on('qt', when='+qt')
-    depends_on('qt', when='+vr')
+    depends_on('qt', when='+qt5')
+    depends_on('qt', when='+vr+qt5')
+    depends_on('qt-base', when='+qt~qt5')
+    depends_on('qt-base', when='+vr~qt5')
 
-    depends_on('opencover+mpi@2021.9:', when='+vr')
+    depends_on('opencover+mpi@2021.9:', when='+vr~qt5')
+    depends_on('opencover+qt5+mpi@2021.9:', when='+vr+qt5')
 
     def setup_build_environment(self, env):
         """Remove environment variables that let CMake find packages outside the spack tree."""
