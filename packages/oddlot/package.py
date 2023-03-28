@@ -14,7 +14,7 @@ class Oddlot(HlrsCovisePackage):
 
     homepage = "https://www.hlrs.de/oddlot"
 
-    depends_on('proj@:7.99')
+    depends_on('proj@:7')
     depends_on('xerces-c')
     depends_on('libtiff')
     depends_on('libpng')
@@ -23,7 +23,7 @@ class Oddlot(HlrsCovisePackage):
     depends_on('opencrg', type='build') # static library only
     depends_on('eigen')
     depends_on('glew')
-    depends_on('qt+opengl@5.0:5.99')
+    depends_on('qt+opengl@5')
 
     def cmake_args(self):
         """Populate cmake arguments for OddLOT."""
