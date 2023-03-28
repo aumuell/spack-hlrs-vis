@@ -15,6 +15,7 @@ class Osgcal(CMakePackage):
     maintainers = ['aumuell']
 
     version('master', tag='master')
+    version('2022.5', commit='66f92936b4783627b71ca640e38cc3789d6dc479')
     version('2021.10', commit='ab2bbb1579479923acd6b96a07101bf07cec3038')
     version('2018.5.1', commit='fbefbd54bb4ec822bb192073f93e904b2645a162')
 
