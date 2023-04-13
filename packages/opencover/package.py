@@ -7,6 +7,8 @@ from spack.package import *
 
 from sys import platform
 
+import re
+
 class HlrsCMakePackage(CMakePackage):
     """Collaborative Visualization and Simulation Environment"""
 
@@ -20,6 +22,9 @@ class HlrsCMakePackage(CMakePackage):
         'Qt5WebKit': 'qt+webkit',
         'Qt5WebView': 'qt+webkit',
         'Qt6Core': 'qt-base',
+        'Qt6GuiTools': 'qt-base',
+        'Qt6UiTools': 'qt-tools',
+        'Qt6Quick': 'qt-declarative',
         'cfitsio': 'cfitsio',
         'Boost': 'boost',
         'OPENSSL': 'openssl',
@@ -113,6 +118,8 @@ class HlrsCMakePackage(CMakePackage):
         #'PTHREAD': None,
 
         'Coin3D': 'coin3d',
+        'anari': 'anari-sdk',
+        'glm': 'glm',
         'Microhttpd': 'libmicrohttpd',
         'Motif': 'motif',
         'ASSIMP': 'assimp',
@@ -154,6 +161,21 @@ class HlrsCMakePackage(CMakePackage):
 
         return args
 
+    def qt_cmake_args(self):
+        """Append flags to find all qt dependencies."""
+        # Qt components typically install cmake config files in a single prefix,
+        # so we have to point them to the cmake config files of dependencies
+        qt_prefix_path = []
+        re_qt = re.compile("qt-.*")
+        for dep in self.spec.dependencies():
+            if re_qt.match(dep.name):
+                qt_prefix_path.append(self.spec[dep.name].prefix)
+
+        # Now append all qt-* dependency prefixes into a prefix path
+        args = []
+        args.append(self.define("QT_ADDITIONAL_PACKAGES_PREFIX_PATH", ":".join(qt_prefix_path)))
+
+        return args
 
 
 class HlrsCovisePackage(HlrsCMakePackage):
@@ -161,7 +183,7 @@ class HlrsCovisePackage(HlrsCMakePackage):
     git = "https://github.com/hlrs-vis/covise.git"
 
     version('master', branch='master', submodules=True)
-    version("2023.9", sha256="cdb0a9572c37f2415462fa87a2ff8a1b341ac00415299b2d31f5c8bfd1c0033a")
+    version("2023.9", sha256="cd2645c8cddab958c19243cab92185e5ca7b839aa17a6ac1eed38426878e8cb5")
     version('2021.10', commit='a7efd685a62f955daa6902737db8b73c02b10c96', submodules=True)
     version('2021.9', tag='v2021.9', submodules=True)
     version('2021.7', tag='v2021.7', submodules=True)
@@ -188,9 +210,17 @@ class HlrsCovisePackage(HlrsCMakePackage):
         args.append('-DCOVISE_WARNING_IS_ERROR=OFF')
         args.append('-DCOVISE_CPU_ARCH:STRING=')
         args.append('-DARCHSUFFIX:STRING=spack')
+        args.append('-DQT_DEBUG_FIND_PACKAGE=ON')
+
+        args.extend(HlrsCMakePackage.qt_cmake_args(self))
 
         return args
 
+    @run_after("install")
+    def darwin_fix(self):
+        # The shared library is not installed correctly on Darwin; fix this
+        if self.spec.satisfies("platform=darwin") and ("+shared" in self.spec):
+            fix_darwin_install_name(self.prefix.lib)
 
 
 class Opencover(HlrsCovisePackage):
@@ -202,7 +232,7 @@ class Opencover(HlrsCovisePackage):
 
     variant('x11', default=not platform=='darwin', description='Use X11 Window system')
     variant('mpi', default=False, description='Enable MPI support - required for Vistle')
-    variant('qt5', default=True, description='Use Qt 5 instead of 6')
+    variant('qt5', default=False, description='Use Qt 5 instead of 6')
     variant('cuda', default=False, description='Enable CUDA support')
     variant('embree', default=False, description='Interactive spray simulation')
     variant('opencv', default=True, description='OpenCV plug-ins')
@@ -224,6 +254,9 @@ class Opencover(HlrsCovisePackage):
     depends_on('xerces-c cxxstd=17')
     depends_on('curl')
     depends_on('qt+opengl+location@5.15:', when='+qt5')
+    depends_on('qt-base+gui+widgets+network+opengl@6:', when='~qt5')
+    depends_on('qt-tools', when='~qt5')
+    depends_on('qt-declarative', when='~qt5')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
