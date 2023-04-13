@@ -20,6 +20,9 @@ class HlrsCMakePackage(CMakePackage):
         'Qt5WebKit': 'qt+webkit',
         'Qt5WebView': 'qt+webkit',
         'Qt6Core': 'qt-base',
+        'Qt6GuiTools': 'qt-base',
+        'Qt6UiTools': 'qt-tools',
+        'Qt6Quick': 'qt-declarative',
         'cfitsio': 'cfitsio',
         'Boost': 'boost',
         'OPENSSL': 'openssl',
@@ -223,7 +226,9 @@ class Opencover(HlrsCovisePackage):
     depends_on('xerces-c cxxstd=17')
     depends_on('curl')
     depends_on('qt+opengl@5.15:', when='+qt5')
-    depends_on('qt-base+network+opengl@6:', when='~qt5')
+    depends_on('qt-base+gui+widgets+network+opengl@6:', when='~qt5')
+    depends_on('qt-tools', when='~qt5')
+    depends_on('qt-declarative', when='~qt5')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
