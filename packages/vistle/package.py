@@ -52,6 +52,8 @@ class Vistle(HlrsCMakePackage):
     conflicts('%gcc@:4.99')
     depends_on('cmake@3.3:', type='build')
 
+    depends_on('llvm-openmp', when='platform=darwin')
+
     extends('python', when='+python')
 
     depends_on('python@2.7:', when='+python', type=('build', 'link', 'run'))
