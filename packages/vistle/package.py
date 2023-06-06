@@ -40,6 +40,7 @@ class Vistle(HlrsCMakePackage):
     variant('assimp', default=True, description='Enable reading of polygonal models (.obj, .stl, ...)')
     variant('proj', default=True, description='Enable MapDrape module for carthographic coordinate mappings')
     variant('gdal', default=True, description='Enable IsoHeightSurface module for carthographic coordinate mappings')
+    variant('cgal', default=True, description='Enable DelaunayTriangulation module for triangulations of point clouds')
 
     variant('multi', default=True, description='Use a process per module')
     variant('double', default=False, description='Use double precision scalars')
@@ -86,6 +87,7 @@ class Vistle(HlrsCMakePackage):
 
     depends_on('assimp', when='+assimp')
 
+    depends_on('cgal', when='+cgal')
     depends_on('gdal', when='+gdal')
     depends_on('proj', when='+proj')
     depends_on('proj@:7', when='+proj@:2021.10')
