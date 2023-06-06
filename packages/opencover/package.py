@@ -221,7 +221,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('mpi', when='+mpi')
     depends_on('cuda', when='+cuda')
 
-    depends_on('boost')
+    depends_on('boost +locale +chrono +timer +program_options +system +thread +filesystem +iostreams +date_time +serialization +regex +atomic')
     depends_on('tbb', when='+visionaray')
 
     depends_on('cfitsio', when='+virvo')
