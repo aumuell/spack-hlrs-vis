@@ -196,7 +196,7 @@ class Opencover(HlrsCovisePackage):
     variant('qt5', default=True, description='Use Qt 5 instead of 6')
     variant('cuda', default=False, description='Enable CUDA support')
     variant('embree', default=False, description='Interactive spray simulation')
-    variant('opencv', default=False, description='OpenCV plug-ins')
+    variant('opencv', default=True, description='OpenCV plug-ins')
     variant('ffmpeg', default=True, description='Video output recording')
     variant('pcl', default=True, description='Enable reading of PCL point cloud files')
     variant('virvo', default=True, description='Enable volume rendering')
@@ -227,8 +227,8 @@ class Opencover(HlrsCovisePackage):
     depends_on('cfitsio', when='+virvo')
 
     depends_on('ffmpeg', when='+ffmpeg')
-    depends_on('embree', when='+embree')
-    depends_on('opencv', when='+opencv')
+    depends_on('embree@3', when='+embree')
+    depends_on('opencv+aruco', when='+opencv')
 
     depends_on('zlib')
     depends_on('libpng')
