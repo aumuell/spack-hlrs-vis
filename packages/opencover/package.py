@@ -7,6 +7,8 @@ from spack.package import *
 
 from sys import platform
 
+import re
+
 class HlrsCMakePackage(CMakePackage):
     """Collaborative Visualization and Simulation Environment"""
 
@@ -157,6 +159,21 @@ class HlrsCMakePackage(CMakePackage):
 
         return args
 
+    def qt_cmake_args(self):
+        """Append flags to find all qt dependencies."""
+        # Qt components typically install cmake config files in a single prefix,
+        # so we have to point them to the cmake config files of dependencies
+        qt_prefix_path = []
+        re_qt = re.compile("qt-.*")
+        for dep in self.spec.dependencies():
+            if re_qt.match(dep.name):
+                qt_prefix_path.append(self.spec[dep.name].prefix)
+
+        # Now append all qt-* dependency prefixes into a prefix path
+        args = []
+        args.append(self.define("QT_ADDITIONAL_PACKAGES_PREFIX_PATH", ":".join(qt_prefix_path)))
+
+        return args
 
 
 class HlrsCovisePackage(HlrsCMakePackage):
@@ -191,6 +208,9 @@ class HlrsCovisePackage(HlrsCMakePackage):
         args.append('-DCOVISE_WARNING_IS_ERROR=OFF')
         args.append('-DCOVISE_CPU_ARCH:STRING=')
         args.append('-DARCHSUFFIX:STRING=spack')
+        args.append('-DQT_DEBUG_FIND_PACKAGE=ON')
+
+        args.extend(HlrsCMakePackage.qt_cmake_args(self))
 
         return args
 
