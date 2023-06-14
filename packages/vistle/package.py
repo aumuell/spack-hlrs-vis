@@ -122,6 +122,11 @@ class Vistle(HlrsCMakePackage):
 
     def setup_run_environment(self, env):
         env.set('VISTLE_ROOT', self.prefix)
+        vars = ['DYLD_LIBRARY_PATH', 'DYLD_FRAMEWORK_PATH', 'DYLD_FALLBACK_LIBRARY_PATH', 'DYLD_FALLBACK_FRAMEWORK_PATH']
+        for v in vars:
+            val = env.get(v)
+            if not val.empty():
+                env.set('VISTLE_'+v, val)
 
     def cmake_args(self):
         """Populate cmake arguments for Vistle."""
