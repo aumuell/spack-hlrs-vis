@@ -31,7 +31,7 @@ class Vistle(HlrsCMakePackage):
     variant('embree', default=True, description='Enable remote rendering')
     variant('python', default=True, description='Enable Python support')
     variant('qt', default=True, description='Build graphical workflow editor relying on Qt')
-    variant('qt5', default=True, description='Build graphical workflow editor relying on Qt 5')
+    variant('qt5', default=False, description='Build graphical workflow editor relying on Qt 5')
     variant('tui', default=True, description='Install interactive command line ineterface')
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
@@ -103,13 +103,18 @@ class Vistle(HlrsCMakePackage):
     depends_on('embree+ispc', when='+embree')
     depends_on('ispc', when='+embree', type='build')
 
-    depends_on('qt', when='+qt5')
-    depends_on('qt', when='+vr+qt5')
-    depends_on('qt-base', when='+qt~qt5')
-    depends_on('qt-base', when='+vr~qt5')
+    with when("+qt5"):
+        depends_on('qt', when='+qt')
+        depends_on('qt', when='+vr')
+    with when("~qt5"):
+        depends_on('qt-base', when='+qt')
+        depends_on('qt-base', when='+vr')
+        depends_on('qt-svg', when='+qt', type="run")
 
-    depends_on('opencover+mpi@2021.9:', when='+vr~qt5')
-    depends_on('opencover+qt5+mpi@2021.9:', when='+vr+qt5')
+    with when("+vr"):
+        depends_on('cover+mpi@2021.9:')
+        depends_on('cover+qt5', when="+qt5")
+        depends_on('cover~qt5', when="~qt5")
 
     def setup_build_environment(self, env):
         """Remove environment variables that let CMake find packages outside the spack tree."""
@@ -148,7 +153,13 @@ class Vistle(HlrsCMakePackage):
 
         args.append(self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'))
 
-        if not '+qt' and not '+vr' in spec:
+        args.append(self.define_from_variant("VISTLE_USE_QT5", "qt5"))
+        if not '+qt' in spec and not '+vr' in spec:
+            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
+            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
+        elif '+qt5' in spec:
+            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
+        else:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
 
         return self.cmake_disable_implicit_deps(args)
