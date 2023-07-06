@@ -39,7 +39,7 @@ class Covise(Opencover):
     #depends_on('openssl')
     depends_on('gdal')
     depends_on('libgeotiff')
-    depends_on('proj@:7.99')
+    depends_on('proj@:7')
 
     def cmake_args(self):
         """Populate cmake arguments for COVISE."""
