@@ -228,7 +228,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('ffmpeg', when='+ffmpeg')
     depends_on('embree@3', when='+embree')
-    depends_on('opencv+aruco', when='+opencv')
+    depends_on('opencv@4.7: +aruco +objdetect +highgui +videoio', when='+opencv')
 
     depends_on('zlib')
     depends_on('libpng')
