@@ -45,6 +45,7 @@ class HlrsCMakePackage(CMakePackage):
         'GeoTIFF': 'libgeotiff',
         'VTKm': 'vtk-m',
         'Freeimage': 'freeimage',
+        'FREEIMAGE': 'freeimage',
         'BLAS': 'blas',
         'LAPACK': 'lapack',
         'OpenEXR': 'openexr',
@@ -58,9 +59,11 @@ class HlrsCMakePackage(CMakePackage):
         'Cg': None,
         'HIDAPI': 'hidapi',
         'Alut': None,
+        'ALUT': None,
         'OpenVR': None,
         'PCL': 'pcl',
         'LibVncServer': None,
+        'LIBVNCSERVER': None,
         'NVML': None,
         'VRPN': 'vrpn',
         'Steereo': None,
@@ -100,6 +103,8 @@ class HlrsCMakePackage(CMakePackage):
         'GDCM': None,
         'Audiofile': None,
         'OpenNURBS': 'opennurbs',
+        'DRACO': 'draco3d',
+        'TinyGLTF': 'tinygltf',
 
         #'PTHREAD': None,
 
@@ -240,6 +245,8 @@ class Opencover(HlrsCovisePackage):
     depends_on('opencrg')
     depends_on('osgcal')
     depends_on('opennurbs')
+    depends_on('draco3d')
+    depends_on('tinygltf')
 
     depends_on('hidapi')
     depends_on('vrpn')
