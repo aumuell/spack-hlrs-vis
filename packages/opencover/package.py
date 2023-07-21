@@ -52,6 +52,7 @@ class HlrsCMakePackage(CMakePackage):
         'CUDA': 'cuda',
         'CUDAToolkit': 'cuda',
         'PythonLibs': 'python',
+        'PythonInterp': 'python',
         'LibUSB1': 'libusb',
         'X11': 'libx11',
         'OpenCV': 'opencv',
@@ -214,7 +215,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('bison', type='build')
     depends_on('swig', type='build')
 
-    depends_on('xerces-c')
+    depends_on('xerces-c cxxstd=17')
     depends_on('curl')
     depends_on('qt+opengl@5.15:', when='+qt5')
     depends_on('qt-base+network+opengl@6:', when='~qt5')
