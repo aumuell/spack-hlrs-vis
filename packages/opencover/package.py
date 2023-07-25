@@ -24,6 +24,7 @@ class HlrsCMakePackage(CMakePackage):
         'Boost': 'boost',
         'OPENSSL': 'openssl',
         'OpenSSL': 'openssl',
+        'OpenAL': 'openal-soft',
         'Git': 'git',
         'VTK': 'vtk',
         'JPEGTURBO': 'libjpeg-turbo',
@@ -75,13 +76,14 @@ class HlrsCMakePackage(CMakePackage):
         'ZSPACE': None,
         'OSGCAL': 'osgcal',
         'OsgQt': None,
-        'OsgEarth': None,
+        'OsgEarth': 'osgearth',
+        'OSGEARTH': 'osgearth',
+        'OsgEphemeris': None,
         'Faro': None,
         'JT': None,
         'SISL': None,
         'E57': 'libe57',
         'OVR': None,
-        'OsgEphemeris': None,
         'SLAM6D': None,
         'WiiYourself': None,
         'PHYSX': None,
@@ -204,6 +206,7 @@ class Opencover(HlrsCovisePackage):
     variant('embree', default=False, description='Interactive spray simulation')
     variant('opencv', default=True, description='OpenCV plug-ins')
     variant('ffmpeg', default=True, description='Video output recording')
+    variant('osgearth', default=True, description='OsgEarth 3D mapping engine')
     variant('pcl', default=True, description='Enable reading of PCL point cloud files')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('drivingsim', default=True, description='Enable driving simulator features')
@@ -235,6 +238,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('ffmpeg', when='+ffmpeg')
     depends_on('embree@3', when='+embree')
     depends_on('opencv@4.7: +aruco +objdetect +highgui +videoio', when='+opencv')
+    depends_on('osgearth', when='+osgearth')
 
     depends_on('zlib')
     depends_on('libpng')
@@ -251,9 +255,9 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('hidapi')
     depends_on('vrpn')
-    #depends_on('fftw')
 
-    #depends_on('speex')
+    depends_on('fftw')
+    depends_on('speex')
 
 
     def cmake_opencover_args(self):
