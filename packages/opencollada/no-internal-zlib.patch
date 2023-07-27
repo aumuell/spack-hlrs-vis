@@ -1,0 +1,76 @@
+From 151d360e215636926723c82dddb12c80d5282cea Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20Aumu=CC=88ller?= <aumuell@reserv.at>
+Date: Thu, 27 Jul 2023 00:58:13 +0200
+Subject: [PATCH] do not use internal zlib
+
+---
+ CMakeLists.txt              |  1 -
+ DAEValidator/CMakeLists.txt | 22 ++++++++--------------
+ 2 files changed, 8 insertions(+), 15 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 95abbe21..a3d94dff 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -274,7 +274,6 @@ add_subdirectory(common/libftoa)
+ add_subdirectory(${EXTERNAL_LIBRARIES}/UTF)
+ add_subdirectory(common/libBuffer)
+ add_subdirectory(${EXTERNAL_LIBRARIES}/MathMLSolver)
+-add_subdirectory(${EXTERNAL_LIBRARIES}/zlib)
+ 
+ # building OpenCOLLADA libs
+ add_subdirectory(COLLADABaseUtils)
+diff --git a/DAEValidator/CMakeLists.txt b/DAEValidator/CMakeLists.txt
+index 03ad540f..0def74e3 100644
+--- a/DAEValidator/CMakeLists.txt
++++ b/DAEValidator/CMakeLists.txt
+@@ -1,5 +1,7 @@
+ project(DAEValidator)
+ 
++find_package(zlib REQUIRED)
++
+ 
+ # DAEValidatorLibrary
+ 
+@@ -80,11 +82,7 @@ if (NOT LIBXML2_FOUND)
+ else ()
+     list(APPEND Libraries ${LIBXML2_LIBRARIES})
+ endif ()
+-if (USE_STATIC)
+-        list(APPEND Libraries zlib_static)
+-    else ()
+-        list(APPEND Libraries zlib_shared)
+-    endif ()
++list(APPEND Libraries ${ZLIB_LIBRARIES})
+ if (WIN32)
+ 	list(APPEND Libraries ws2_32.lib)
+ endif ()
+@@ -156,9 +154,9 @@ if (WIN32 AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSIO
+ 	target_include_directories(DAEValidatorTests PRIVATE ${VCINSTALLDIR}/UnitTest/include tests/include)
+ 	set(Libraries DAEValidatorLibrary)
+ 	if (USE_STATIC)
+-		list(APPEND Libraries xml_static zlib_static)
++		list(APPEND Libraries xml_static ${ZLIB_LIBRARIES})
+ 	else ()
+-		list(APPEND Libraries xml_shared zlib_shared)
++		list(APPEND Libraries xml_shared ${ZLIB_LIBRARIES})
+ 	endif ()
+ 	if (WIN32)
+ 		list(APPEND Libraries ws2_32.lib)
+@@ -208,10 +206,6 @@ else ()
+     include_directories(${LIBXML2_INCLUDE_DIR})
+ endif ()
+ 
+-# zlib
+-if (USE_STATIC)
+-	add_dependencies(DAEValidatorExecutable zlib_static)
+-else ()
+-	add_dependencies(DAEValidatorExecutable zlib_shared)
+-endif ()
+-include_directories("../Externals/zlib/include")
++target_link_libraries(DAEValidatorExecutable ${ZLIB_LIBRARIES})
++
++include_directories(${ZLIB_INCLUDE_DIRECTORIES})
+-- 
+2.41.0
+
