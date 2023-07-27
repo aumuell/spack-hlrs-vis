@@ -27,7 +27,7 @@ index 03ad540f..0def74e3 100644
 @@ -1,5 +1,7 @@
  project(DAEValidator)
  
-+find_package(zlib REQUIRED)
++find_package(ZLIB REQUIRED)
 +
  
  # DAEValidatorLibrary

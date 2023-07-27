@@ -52,9 +52,9 @@ class Opencollada(CMakePackage):
             sha256="9741a73c9759d12ebb52258b83905ffc06f801e710beaeb224443b58da13f8b4"
     )
 
+    # do not use private copy of zlib
     patch(
             "no-internal-zlib.patch",
-            sha256="9741a73c9759d17ebb52258b83905ffc06f801e710beaeb224443b58da13f8b4"
     )
 
     def patch(self):
