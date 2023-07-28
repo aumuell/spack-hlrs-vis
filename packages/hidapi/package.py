@@ -27,8 +27,9 @@ class Hidapi(CMakePackage):
 
     variant("libudev", default=False, description="Build with libudev")
 
-    #depends_on('fox')
+    depends_on('pkgconfig', type='build')
     depends_on('libusb')
+    depends_on('libiconv')
 
     def cmake_args(self):
         """Populate cmake arguments for Hidapi."""
