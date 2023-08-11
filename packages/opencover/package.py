@@ -245,7 +245,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('xerces-c cxxstd=17')
     depends_on('curl')
-    depends_on('qt+opengl@5.15:', when='+qt5')
+    depends_on('qt+opengl+location@5.15:', when='+qt5')
     depends_on('qt-base+gui+widgets+network+opengl@6:', when='~qt5')
     depends_on('qt-tools', when='~qt5')
     depends_on('qt-declarative', when='~qt5')
@@ -287,6 +287,8 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('fftw')
     depends_on('speex')
+
+    depends_on('proj@:7')
 
 
     def cmake_opencover_args(self):
