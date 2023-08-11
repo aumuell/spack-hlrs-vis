@@ -213,6 +213,7 @@ class Opencover(HlrsCovisePackage):
     variant('virvo', default=True, description='Enable volume rendering')
     variant('drivingsim', default=True, description='Enable driving simulator features')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
+    variant('proj', default=True, description='Enable features relying on PROJ')
 
     depends_on('python@2.7:', type=('build', 'run'))
 
@@ -222,8 +223,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('xerces-c cxxstd=17')
     depends_on('curl')
-    depends_on('qt+opengl@5.15:', when='+qt5')
-    depends_on('qt-base+network+opengl@6:', when='~qt5')
+    depends_on('qt+opengl+location@5.15:', when='+qt5')
     depends_on('glu')
     depends_on('glew')
     depends_on('openscenegraph@3.2:')
@@ -262,6 +262,8 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('fftw')
     depends_on('speex')
+
+    depends_on('proj@:7', when='+proj')
 
 
     def cmake_opencover_args(self):
