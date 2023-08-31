@@ -253,6 +253,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('opennurbs')
     depends_on('draco3d+pic')
     depends_on('tinygltf')
+    depends_on('open62541')
 
     depends_on('hidapi')
     depends_on('vrpn')
