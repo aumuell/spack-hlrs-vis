@@ -81,7 +81,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('lz4')
     depends_on('snappy')
 
-    depends_on('zlib')
+    depends_on('zlib-api')
     depends_on('libzip')
     depends_on('libarchive')
 

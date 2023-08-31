@@ -243,7 +243,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('opencv@4.7: +aruco +objdetect +highgui +videoio', when='+opencv')
     depends_on('osgearth', when='+osgearth')
 
-    depends_on('zlib')
+    depends_on('zlib-api')
     depends_on('libpng')
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
