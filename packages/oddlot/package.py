@@ -19,7 +19,7 @@ class Oddlot(HlrsCovisePackage):
     depends_on('libtiff')
     depends_on('libpng')
     depends_on('libjpeg-turbo')
-    depends_on('boost')
+    depends_on('boost +locale')
     depends_on('opencrg', type='build') # static library only
     depends_on('eigen')
     depends_on('glew')
