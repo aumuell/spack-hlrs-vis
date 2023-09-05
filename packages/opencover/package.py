@@ -209,6 +209,7 @@ class Opencover(HlrsCovisePackage):
     variant('ffmpeg', default=True, description='Video output recording')
     variant('osgearth', default=True, description='OsgEarth 3D mapping engine')
     variant('pcl', default=True, description='Enable reading of PCL point cloud files')
+    variant('opennurbs', default=False, description='Enable reading of 3DM files')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('drivingsim', default=True, description='Enable driving simulator features')
     variant('visionaray', default=False, description='Enable interactive ray-tracing')
@@ -250,7 +251,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('opencrg')
     depends_on('osgcal')
-    depends_on('opennurbs')
+    depends_on('opennurbs', when='+opennurbs')
     depends_on('draco3d+pic')
     depends_on('tinygltf')
     depends_on('open62541')
