@@ -18,7 +18,7 @@ class Open62541(CMakePackage):
     variant("shared", default=True, description="Build shared libraries")
 
     version("master", branch="master", submodules=True)
-    version("1.3.6", sha256="0751ce6273908b1e571f36591665f3d5b9451514c2478ea5f6b4b466d7da6b02")
+    version("1.3.7", sha256="d3f84f1e2632c15a3892dc6c89f0cd6b4137e990b8aef8fe245cd8e75fbb5388")
     version("1.2.7", sha256="6bf64ce86f2e5e1d5c7213e13577ebf6d6c8a3a41fc3e33d1fbdb29117e9ef5b")
 
     depends_on("python@3")
