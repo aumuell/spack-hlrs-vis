@@ -3,23 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install osgearth
-#
-# You can edit this file again by typing:
-#
-#     spack edit osgearth
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack.package import *
 
 
@@ -66,12 +49,6 @@ class Osgearth(CMakePackage):
         #if self.spec.satisfies("@:3.3"):
             #filter_file("../../third_party/lerc/include", "{0}/include".format(self.spec["lerc"].prefix), "src/osgEarthDrivers/lerc/CMakeLists.txt")
 
-    def cmake_args(self):
-        # FIXME: Add arguments other than
-        # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-        # FIXME: If not needed delete this function
         args = []
-        #args.append("-DTINYGLTF_BUILD_EXAMPLES=OFF")
-        #args.append("-DRAPIDJSON_INCLUDE={0}".format(spec["rapidjson"]))
         args.append("-DOSGEARTH_BUILD_TESTS:BOOL=OFF")
         return args
