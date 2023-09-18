@@ -12,14 +12,17 @@ class Vrpn(CMakePackage):
        The device-independent, network-transparent system for accessing virtual reality peripherals from VR applications."""
 
     homepage = "https://vrpn.github.io/"
-    git      = "https://github.com/vrpn/vrpn.git"
+    url = "https://github.com/vrpn/vrpn/releases/download/version_07.35/vrpn_07.35.zip"
+    git = "https://github.com/vrpn/vrpn.git"
 
     maintainers("aumuell")
 
     version('master', branch='master', submodules=True)
-    version('7.35', tag='v07.35', submodules=True)
-    version('7.34', tag='v07.34', submodules=True)
-    version('7.33', tag='v07.33', submodules=True)
+    version("07.35", sha256="06b74a40b0fb215d4238148517705d0075235823c0941154d14dd660ba25af19")
+    version("07.34", sha256="1ecb68f25dcd741c4bfe161ce15424f1319a387a487efa3fbf49b8aa249c9910")
+    version("07.33", sha256="3cb9e71f17eb756fbcf738e6d5084d47b3b122b68b66d42d6769105cb18a79be",
+            url="https://github.com/vrpn/vrpn/releases/download/v07.33/vrpn_07_33.zip")
+
 
     variant('mpi', default=False, description='MPI support')
     variant('python', default=False, description='Python bindings')
