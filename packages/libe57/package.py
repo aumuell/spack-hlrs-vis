@@ -9,29 +9,18 @@ class Libe57(CMakePackage):
     """Software Tools for Managing E57 Point Cloud Files"""
 
     homepage = 'http://libe57.org'
-    git      = "https://github.com/hlrs-vis/libe57.git"
+    url = "https://github.com/hlrs-vis/libe57/archive/refs/tags/v1.1.334.tar.gz"
+    git = "https://github.com/hlrs-vis/libe57.git"
 
     maintainers = ['aumuell']
 
     version('master', preferred=False, branch='master')
-    version('1.1.334', tag='v1.1.334')
-    version('1.1.333', tag='v1.1.333')
-
-    #url "https://github.com/hlrs-vis/libe57.git", branch: "main", revision: "6c6b0c8355d870342f1736bfcc3b5299fe012d4c"
-    #license "http://libe57.org/license.html"
-    #head "https://github.com/hlrs-vis/libe57.git", branch: "main"
+    version("1.1.334", sha256="ff15ce1d2d9572daedbe990755800ea5fb0ef5dfbd8b9db9d679e73c43996bc4")
+    version("1.1.333", sha256="f8fe8e329fb75c48bea5e45cad46cb011a62f3005cb1551cdc183e98253cfd44")
 
     depends_on('cmake@3.3:', type='build')
     depends_on('boost+multithreaded')
     depends_on('xerces-c')
-
-    def cmake_args(self):
-        """Populate cmake arguments for LibE57."""
-        spec = self.spec
-
-        args = []
-
-        return args
 
     def test(self):
         """Perform smoke tests on the installed package."""
