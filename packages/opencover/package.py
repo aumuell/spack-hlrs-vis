@@ -207,7 +207,7 @@ class Opencover(HlrsCovisePackage):
     variant('embree', default=False, description='Interactive spray simulation')
     variant('opencv', default=True, description='OpenCV plug-ins')
     variant('ffmpeg', default=True, description='Video output recording')
-    variant('osgearth', default=True, description='OsgEarth 3D mapping engine')
+    variant('osgearth', default=False, description='OsgEarth 3D mapping engine')
     variant('pcl', default=True, description='Enable reading of PCL point cloud files')
     variant('opennurbs', default=False, description='Enable reading of 3DM files')
     variant('virvo', default=True, description='Enable volume rendering')
