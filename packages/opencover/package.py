@@ -234,6 +234,7 @@ class Opencover(HlrsCovisePackage):
 
     depends_on('boost +locale +icu +chrono +timer +program_options +system +thread +filesystem +iostreams +date_time +serialization +regex +atomic')
     depends_on('tbb', when='+visionaray')
+    depends_on('eigen')
 
     depends_on('cfitsio', when='+virvo')
 
