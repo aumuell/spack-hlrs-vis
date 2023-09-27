@@ -14,11 +14,13 @@ class Vistle(HlrsCMakePackage):
     visualization."""
 
     homepage = 'https://www.vistle.io'
-    git      = "https://github.com/vistle/vistle.git"
+    url = "https://github.com/vistle/vistle/releases/download/v2023.9/vistle-v2023.9.tar.gz"
+    git = "https://github.com/vistle/vistle.git"
 
     maintainers = ['aumuell']
 
     version('master', branch='master', submodules=True)
+    version("2023.9", sha256="6ab328c3bb1ffb2763823792376be6b373eb5d81315771aa22746b489a0721b2")
     version('2021.10', tag='v2021.10', submodules=True)
     version('2020.9', tag='v2020.9', submodules=True)
     version('2020.8', commit='aaf99ff79145c10a6ba4754963266244b1481660', submodules=True)
