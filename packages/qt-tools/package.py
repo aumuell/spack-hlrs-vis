@@ -14,6 +14,7 @@ class QtTools(QtPackage):
     url = QtPackage.get_url(__qualname__)
     list_url = QtPackage.get_list_url(__qualname__)
 
+    version("6.5.3", sha256="e0f7407ef889688aaddaba3b6984da10e009189659d403e141e3b81580da2294")
     version("6.5.2", sha256="962a343f090adcf73340f72cb81655b6243f7b4d91a980e0f538c2a111e1aa3a")
     version("6.5.1", sha256="d86516cb8083ce6088fae9f900490c41cf4e472c51e4334e06e5dbb2e24fe688")
     version("6.5.0", sha256="e775a323eab8acb4367f910b572ffacb71dc91d78d79f31eee472ae4214ba5e9")
