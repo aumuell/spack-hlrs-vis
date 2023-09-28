@@ -157,11 +157,11 @@ class HlrsCMakePackage(CMakePackage):
 
 
 class HlrsCovisePackage(HlrsCMakePackage):
-    git      = "https://github.com/hlrs-vis/covise.git"
+    url = "https://github.com/hlrs-vis/covise/archive/refs/tags/v2023.9.tar.gz"
+    git = "https://github.com/hlrs-vis/covise.git"
 
-    # FIXME: Add proper versions and checksums here.
-    # version('1.2.3', '0123456789abcdef0123456789abcdef')
     version('master', branch='master', submodules=True)
+    version("2023.9", sha256="5f139c3ab684d138766a7f201523773143310509897eea8b4b0ef44c2e54bf2f")
     version('2021.10', commit='a7efd685a62f955daa6902737db8b73c02b10c96', submodules=True)
     version('2021.9', tag='v2021.9', submodules=True)
     version('2021.7', tag='v2021.7', submodules=True)
