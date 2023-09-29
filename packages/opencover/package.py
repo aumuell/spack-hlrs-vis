@@ -183,7 +183,7 @@ class HlrsCovisePackage(HlrsCMakePackage):
     git = "https://github.com/hlrs-vis/covise.git"
 
     version('master', branch='master', submodules=True)
-    version("2023.9", sha256="cdb0a9572c37f2415462fa87a2ff8a1b341ac00415299b2d31f5c8bfd1c0033a")
+    version("2023.9", sha256="cd2645c8cddab958c19243cab92185e5ca7b839aa17a6ac1eed38426878e8cb5")
     version('2021.10', commit='a7efd685a62f955daa6902737db8b73c02b10c96', submodules=True)
     version('2021.9', tag='v2021.9', submodules=True)
     version('2021.7', tag='v2021.7', submodules=True)
