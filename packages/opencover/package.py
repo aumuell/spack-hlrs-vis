@@ -118,6 +118,8 @@ class HlrsCMakePackage(CMakePackage):
         #'PTHREAD': None,
 
         'Coin3D': 'coin3d',
+        'anari': 'anari-sdk',
+        'glm': 'glm',
         'Microhttpd': 'libmicrohttpd',
         'Motif': 'motif',
         'ASSIMP': 'assimp',
