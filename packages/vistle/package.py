@@ -108,9 +108,9 @@ class Vistle(HlrsCMakePackage):
     depends_on('qt-base', when='+qt~qt5')
     depends_on('qt-base', when='+vr~qt5')
 
-    depends_on('opencover+mpi@2021.9:', when='+vr')
-    depends_on('opencover~qt5', when='+vr~qt5')
-    depends_on('opencover+qt5', when='+vr+qt5')
+    depends_on('cover+mpi@2021.9:', when='+vr')
+    depends_on('cover~qt5', when='+vr~qt5')
+    depends_on('cover+qt5', when='+vr+qt5')
 
     def setup_build_environment(self, env):
         """Remove environment variables that let CMake find packages outside the spack tree."""
@@ -122,9 +122,6 @@ class Vistle(HlrsCMakePackage):
 
     def setup_run_environment(self, env):
         env.set('VISTLE_ROOT', self.prefix)
-        vars = ['DYLD_LIBRARY_PATH', 'DYLD_FRAMEWORK_PATH', 'DYLD_FALLBACK_LIBRARY_PATH', 'DYLD_FALLBACK_FRAMEWORK_PATH']
-        for v in vars:
-             env.set('VISTLE_'+v, "${{0}}".format(v))
 
     def cmake_args(self):
         """Populate cmake arguments for Vistle."""
