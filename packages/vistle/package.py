@@ -154,9 +154,13 @@ class Vistle(HlrsCMakePackage):
 
         args.append(self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'))
 
-        if '~qt5' or not '+qt' and not '+vr' in spec:
+        args.append(self.define_from_variant("VISTLE_USE_QT5", "qt5"))
+        if not '+qt' in spec and not '+vr' in spec:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
-        if '+qt5' or not '+qt' and not '+vr' in spec:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
+        elif '+qt5' in spec:
+            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
+        else:
+            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
 
         return self.cmake_disable_implicit_deps(args)
