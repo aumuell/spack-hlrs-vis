@@ -21,7 +21,9 @@ class Covise(Opencover):
 
     depends_on('python@2.7:', type=('build', 'run'))
     #depends_on('qt@5.15:+opengl+webkit') # depends on Python 2, does not work in spack > 0.19
-    depends_on('qt@5.15:+opengl')
+    depends_on('qt@5.15:+opengl', when="+qt5")
+    depends_on('qt-base+gui+network+widgets+opengl', when="~qt5")
+    depends_on('qt-svg', when="~qt5")
 
     depends_on('hdf5+cxx+hl', when='+hdf5')
     depends_on('netcdf-cxx4', when='+hdf5')
@@ -35,8 +37,6 @@ class Covise(Opencover):
     depends_on('assimp', when='+assimp')
 
     depends_on('libmicrohttpd')
-    #depends_on('coin3d')
-    #depends_on('openssl')
     depends_on('gdal')
     depends_on('libgeotiff')
 
