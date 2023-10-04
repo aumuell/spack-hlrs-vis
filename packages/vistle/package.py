@@ -103,14 +103,18 @@ class Vistle(HlrsCMakePackage):
     depends_on('embree+ispc', when='+embree')
     depends_on('ispc', when='+embree', type='build')
 
-    depends_on('qt', when='+qt+qt5')
-    depends_on('qt', when='+vr+qt5')
-    depends_on('qt-base', when='+qt~qt5')
-    depends_on('qt-base', when='+vr~qt5')
+    with when("+qt5"):
+        depends_on('qt', when='+qt')
+        depends_on('qt', when='+vr')
+    with when("~qt5"):
+        depends_on('qt-base', when='+qt')
+        depends_on('qt-base', when='+vr')
+        depends_on('qt-svg', when='+qt', type="run")
 
-    depends_on('cover+mpi@2021.9:', when='+vr')
-    depends_on('cover~qt5', when='+vr~qt5')
-    depends_on('cover+qt5', when='+vr+qt5')
+    with when("+vr"):
+        depends_on('cover+mpi@2021.9:')
+        depends_on('cover+qt5', when="+qt5")
+        depends_on('cover~qt5', when="~qt5")
 
     def setup_build_environment(self, env):
         """Remove environment variables that let CMake find packages outside the spack tree."""
