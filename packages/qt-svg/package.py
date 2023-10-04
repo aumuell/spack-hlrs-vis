@@ -37,3 +37,6 @@ class QtSvg(QtPackage):
         args = super().cmake_args() + [
                 ]
         return args
+
+    def setup_run_environment(self, env):
+        env.prepend_path('QT_PLUGIN_PATH', self.prefix.plugins)
