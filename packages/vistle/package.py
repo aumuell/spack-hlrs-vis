@@ -70,7 +70,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('boost+pic', when='+static')
     depends_on('boost+mpi', when='+boostmpi')
 
-    depends_on('netcdf-c')
+    depends_on('netcdf-c +hdf4') # hdf4 for MPAS
     depends_on('netcdf-cxx4', when='+netcdf')
     depends_on('parallel-netcdf', when='+pnetcdf')
     depends_on('xdmf3', when='+xdmf')
