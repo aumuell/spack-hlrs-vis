@@ -14,7 +14,8 @@ class Cal3d(AutotoolsPackage):
 
     maintainers = ['aumuell']
 
-    version('master', preferred=False, branch='master')
+    version("master", preferred=False, branch="master")
+    version("2024.1", sha256="ea92fa0e7ec4f831d17ab04de5413f88d6a861f2260f64593ceee3c9f6b618ac")
     version("2021.10", sha256="f35bb2dd034f254cecf47f66b67bb76aa421180bd662f0258760b9a2875f5a07")
     version("2018.5.2", sha256="55e61e04d85e4fd8bb608f477558ffcb616a48988f9e45ec244aa2ef59e21732")
 
