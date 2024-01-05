@@ -20,6 +20,7 @@ class Vistle(HlrsCMakePackage):
     maintainers = ['aumuell']
 
     version('master', branch='master', submodules=True)
+    version("2024.1.1", sha256="2bf644061d85dcc0e09b9af244da2795bcbb74e586ef35552f856d1ffbfbdc7f")
     version("2023.9", sha256="6ab328c3bb1ffb2763823792376be6b373eb5d81315771aa22746b489a0721b2")
     version('2021.10', tag='v2021.10', submodules=True)
     version('2020.9', tag='v2020.9', submodules=True)
@@ -118,7 +119,10 @@ class Vistle(HlrsCMakePackage):
         depends_on('qt-svg', when='+qt', type="run")
 
     with when("+vr"):
-        depends_on('cover+mpi@2021.9:')
+        depends_on('cover@2024.1:', when="@2024.1:")
+        depends_on('cover@2023.9:', when="@2023.9:")
+        depends_on('cover@2021.9:')
+        depends_on('cover+mpi')
         depends_on('cover+qt5', when="+qt5")
         depends_on('cover~qt5', when="~qt5")
 
