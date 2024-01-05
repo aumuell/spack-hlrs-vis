@@ -51,6 +51,7 @@ class Vistle(HlrsCMakePackage):
     variant('static', default=False, description='Do not build shared libraries')
     variant('dev', default=True, description='Install internal 3rd party dependencies for linking to Vistle')
     variant('boostmpi', default=True, description='Do not use internal copy of Boost.MPI')
+    variant('vtkm', default=True, description='Do not use internal copy of VTK-m')
 
     conflicts('%gcc@:4.99')
     depends_on('cmake@3.3:', type='build')
@@ -69,6 +70,11 @@ class Vistle(HlrsCMakePackage):
     depends_on('boost+atomic+thread+exception+log+locale+math+random+timer+filesystem+date_time+program_options+serialization+system+iostreams+chrono@1.59:')
     depends_on('boost+pic', when='+static')
     depends_on('boost+mpi', when='+boostmpi')
+
+    with when("+vtkm"):
+        depends_on('vtk-m@2 +fpic')
+        depends_on("vtk-m +64bitids", when="+large")
+        depends_on("vtk-m ~64bitids", when="~large")
 
     depends_on('netcdf-c +hdf4') # hdf4 for MPAS
     depends_on('netcdf-cxx4', when='+netcdf')
@@ -142,10 +148,8 @@ class Vistle(HlrsCMakePackage):
                 '-DVISTLE_MODULES_SHARED=OFF'
             ])
 
-        if '+boostmpi' in spec:
-            args.append('-DVISTLE_INTERNAL_BOOST_MPI=OFF')
-        else:
-            args.append('-DVISTLE_INTERNAL_BOOST_MPI=ON')
+        args.append(self.define('VISTLE_INTERNAL_BOOST_MPI', not spec.satisfies('+boostmpi')))
+        args.append(self.define('VISTLE_INTERNAL_VTKM', not spec.satisfies('+vtkm')))
 
         args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
         args.append(self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'))
