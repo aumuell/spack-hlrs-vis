@@ -20,6 +20,7 @@ class Vistle(HlrsCMakePackage):
     maintainers = ['aumuell']
 
     version('master', branch='master', submodules=True)
+    version("2024.2", sha256="1d2959ea56b6e8fcf617f9772f34801c66ce7b86e0d61dbe2813a1b6c7e16b18")
     version("2024.1.1", sha256="2bf644061d85dcc0e09b9af244da2795bcbb74e586ef35552f856d1ffbfbdc7f")
     version("2023.9", sha256="6ab328c3bb1ffb2763823792376be6b373eb5d81315771aa22746b489a0721b2")
     version('2021.10', tag='v2021.10', submodules=True)
