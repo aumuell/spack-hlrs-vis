@@ -43,7 +43,7 @@ class HlrsVisSdk(BundlePackage):
 
         depends_on("ispc@1.20:")
         depends_on("embree+ispc@4.3:")
-        depends_on("anari-sdk +examples +helide")
+        #depends_on("anari-sdk +examples +helide")
 
         depends_on("botan")
         depends_on("proj@7:")
