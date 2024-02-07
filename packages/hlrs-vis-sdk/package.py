@@ -20,7 +20,9 @@ class HlrsVisSdk(BundlePackage):
     variant("qt5", default=False, description="use Qt5 instead of Qt6")
     variant("mpi", default=True, description="use MPI")
 
-    depends_on("boost +atomic+chrono+date_time+exception+filesystem+iostreams+locale+log+math+program_options+random+serialization+system+thread+timer")
+    depends_on("boost +atomic+chrono+container+date_time+exception+filesystem+graph+icu+iostreams+locale+log+math+multithreaded+program_options+random+regex+serialization+system+thread+timer+wave cxxstd=17")
+    depends_on("boost +mpi", when="+mpi")
+    depends_on("boost ~mpi", when="~mpi")
 
     depends_on("ninja")
     depends_on("cmake")
