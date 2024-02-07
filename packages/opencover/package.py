@@ -240,7 +240,7 @@ class Opencover(HlrsCovisePackage):
     variant('opencv', default=True, description='OpenCV plug-ins')
     variant('ffmpeg', default=True, description='Video output recording')
     variant('osgearth', default=False, description='OsgEarth 3D mapping engine')
-    variant('pcl', default=True, description='Enable reading of PCL point cloud files')
+    variant('pcl', default=False, description='Enable reading of PCL point cloud files')
     variant('opennurbs', default=False, description='Enable reading of 3DM files')
     variant('virvo', default=True, description='Enable volume rendering')
     variant('drivingsim', default=True, description='Enable driving simulator features')
