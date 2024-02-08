@@ -69,7 +69,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('mpi')
     depends_on('hwloc')
     depends_on('botan')
-    depends_on('boost+atomic+thread+exception+log+locale+math+random+timer+filesystem+date_time+program_options+serialization+system+iostreams+chrono@1.59:')
+    depends_on('boost+atomic+thread+exception+log+locale+math+random+timer+filesystem+date_time+program_options+serialization+system+iostreams+chrono+regex@1.59:')
     depends_on('boost+pic', when='+static')
     depends_on('boost+mpi', when='+boostmpi')
 
