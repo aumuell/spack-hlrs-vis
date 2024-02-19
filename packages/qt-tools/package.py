@@ -14,6 +14,11 @@ class QtTools(QtPackage):
     url = QtPackage.get_url(__qualname__)
     list_url = QtPackage.get_list_url(__qualname__)
 
+    version("6.7.2", sha256="3ae2db630606edf94cc368691ee1da9c0bae7a06ff46c544c459cece8b60b62a")
+    version("6.7.1", sha256="ba9e89e799cebf0bfdb62a5c7f352dd75aa6dc5801982c3d3153f574932c3681")
+    version("6.7.0", sha256="600705c4441d1840652c4158697f6d0b133887f59daab1ac6199648765e0fd92")
+    version("6.6.3", sha256="a7b40eec5c59e0a757da43ce519260392ac794fa70c65c0d73f88b1c1d9b84ef")
+    version("6.6.2", sha256="75075646c05635ade8bf91b64287f8ec90572a9ac559bf3fc744c461e24db0e5")
     version("6.6.1", sha256="6e5816628a2cdcf4147483f7d088870695af7d9770d4e2b68a0765fda5b3e12a")
     version("6.6.0", sha256="b7e3f49543176cea0b48641d115e00f4779b7c366b9fcf70235abe1b50b89112")
     version("6.5.3", sha256="e0f7407ef889688aaddaba3b6984da10e009189659d403e141e3b81580da2294")
@@ -31,7 +36,9 @@ class QtTools(QtPackage):
 
     depends_on("qt-base +gui +network")
     depends_on("qt-base +dbus", when="+dbus")
-    depends_on("llvm +clang", when="+llvm")
+    with when("+llvm"):
+        depends_on("llvm +clang")
+        depends_on("llvm@15:", when="@6.7:")
 
     for _v in QtBase.versions:
         v = str(_v)
