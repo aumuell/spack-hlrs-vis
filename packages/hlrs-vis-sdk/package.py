@@ -55,6 +55,7 @@ class HlrsVisSdk(BundlePackage):
         depends_on("zstd")
         depends_on("libjpeg-turbo")
 
+        depends_on("netcdf-c +hdf4") # for MPAS data
         depends_on("netcdf-c ~mpi", when="~mpi")
         depends_on("netcdf-c +mpi", when="+mpi")
         depends_on("netcdf-cxx4")
@@ -78,10 +79,15 @@ class HlrsVisSdk(BundlePackage):
         depends_on("openscenegraph +apps +dcmtk +gdal +gta +inventor +opencascade +openexr +pdf +svg")
         depends_on("osgcal")
         depends_on("vrpn")
+        depends_on("hidapi")
         depends_on("opencv")
         depends_on("opencv@4.7: +aruco +objdetect +highgui +videoio")
         depends_on("ffmpeg")
         depends_on("libtiff")
+        depends_on("tinygltf")
+        depends_on("draco3d+pic")
+        depends_on("libe57")
+        depends_on("speex")
 
         with when("~qt5"):
             depends_on("qt-tools")
