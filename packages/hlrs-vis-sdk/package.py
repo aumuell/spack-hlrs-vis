@@ -88,6 +88,7 @@ class HlrsVisSdk(BundlePackage):
         depends_on("draco3d+pic")
         depends_on("libe57")
         depends_on("speex")
+        depends_on("open62541@1.4:")
 
         with when("~qt5"):
             depends_on("qt-tools")

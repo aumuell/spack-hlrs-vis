@@ -291,7 +291,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('opennurbs', when='+opennurbs')
     depends_on('draco3d+pic')
     depends_on('tinygltf')
-    depends_on('open62541@master')
+    depends_on('open62541@1.4:')
 
     depends_on('hidapi')
     depends_on('vrpn')
