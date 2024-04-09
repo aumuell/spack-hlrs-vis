@@ -252,6 +252,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('flex', type='build')
     depends_on('bison', type='build')
     depends_on('swig', type='build')
+    conflicts("swig@4.2:", when="@:2024.2", msg="SWIG_Python_str_AsChar not available in SWIG 4.2")
 
     depends_on('xerces-c cxxstd=17')
     depends_on('curl')
