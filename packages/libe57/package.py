@@ -15,6 +15,7 @@ class Libe57(CMakePackage):
     maintainers = ['aumuell']
 
     version('master', preferred=False, branch='master')
+    version("1.1.335", sha256="2e612aa0bb1c8f4659ca6dbcc8f918344e90cfa0334e16532016cfb24566f545")
     version("1.1.334", sha256="ff15ce1d2d9572daedbe990755800ea5fb0ef5dfbd8b9db9d679e73c43996bc4")
     version("1.1.333", sha256="f8fe8e329fb75c48bea5e45cad46cb011a62f3005cb1551cdc183e98253cfd44")
 
