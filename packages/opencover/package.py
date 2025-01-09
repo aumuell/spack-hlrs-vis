@@ -284,7 +284,7 @@ class Opencover(HlrsCovisePackage):
     depends_on('libtiff')
     depends_on('libjpeg-turbo')
     depends_on('libe57')
-    depends_on('pcl^hdf5+hl+cxx', when='+pcl')
+    depends_on('pcl', when='+pcl')
 
     depends_on('opencrg')
     depends_on('osgcal')
