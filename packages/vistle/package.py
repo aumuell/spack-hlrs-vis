@@ -38,6 +38,7 @@ class Vistle(HlrsCMakePackage):
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
     variant('pnetcdf', default=True, description='Enable reading of e.g. MPAS data')
+    variant('hdf5', default=True, description='Enable reading of HDF5 based data formats')
     variant('xdmf', default=False, description='Enable reading of SeisSol data')
     variant('osg', default=True, description='Build renderer relying on OpenSceneGraph')
     variant('vr', default=True, description='Build virtual environment render module based on OpenCOVER')
@@ -81,6 +82,7 @@ class Vistle(HlrsCMakePackage):
     depends_on('netcdf-c +hdf4') # hdf4 for MPAS
     depends_on('netcdf-cxx4', when='+netcdf')
     depends_on('parallel-netcdf', when='+pnetcdf')
+    depends_on('hdf5', when='+hdf5')
     depends_on('xdmf3', when='+xdmf')
 
     depends_on('tbb')
