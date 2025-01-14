@@ -160,4 +160,4 @@ class VistleLite(CMakePackage):
         else:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
 
-        return self.cmake_disable_implicit_deps(args)
+        return args
