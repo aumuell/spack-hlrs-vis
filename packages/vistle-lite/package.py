@@ -112,10 +112,8 @@ class VistleLite(CMakePackage):
 
     with when("+qt5"):
         depends_on('qt', when='+qt')
-        depends_on('qt', when='+vr')
     with when("~qt5"):
         depends_on('qt-base', when='+qt')
-        depends_on('qt-base', when='+vr')
         depends_on('qt-svg', when='+qt', type="run")
 
     def setup_build_environment(self, env):
@@ -154,7 +152,7 @@ class VistleLite(CMakePackage):
         args.append(self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'))
 
         args.append(self.define_from_variant("VISTLE_USE_QT5", "qt5"))
-        if not '+qt' in spec and not '+vr' in spec:
+        if not '+qt' in spec:
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
             args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
         elif '+qt5' in spec:
