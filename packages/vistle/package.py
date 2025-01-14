@@ -36,6 +36,7 @@ class Vistle(HlrsCMakePackage):
     variant('qt5', default=False, description='Build graphical workflow editor relying on Qt 5')
     variant('tui', default=True, description='Install interactive command line ineterface')
     variant('vtk', default=True, description='Enable reading VTK data')
+    variant('foam', default=True, description='Enable reading OpenFOAM data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
     variant('pnetcdf', default=True, description='Enable reading of e.g. MPAS data')
     variant('hdf5', default=True, description='Enable reading of HDF5 based data formats')
@@ -54,10 +55,14 @@ class Vistle(HlrsCMakePackage):
     variant('static', default=False, description='Do not build shared libraries')
     variant('dev', default=True, description='Install internal 3rd party dependencies for linking to Vistle')
     variant('boostmpi', default=True, description='Do not use internal copy of Boost.MPI')
+    variant('cuda', default=False, description='Build with CUDA')
     variant('vtkm', default=True, description='Do not use internal copy of VTK-m')
+    variant('kokkos', default=False, description='Use Kokkos backend for internal VTK-m', when='~vtkm')
+    variant('rocm', default=False, description='Use rocm-enabled Kokkos backend for internal VTK-m', when='~vtkm')
 
     conflicts('%gcc@:4.99')
     depends_on('cmake@3.3:', type='build')
+    depends_on('git', type='build')
 
     depends_on('llvm-openmp', when='platform=darwin')
 
@@ -79,6 +84,14 @@ class Vistle(HlrsCMakePackage):
         depends_on("vtk-m +64bitids", when="+large")
         depends_on("vtk-m ~64bitids", when="~large")
 
+    with when("+rocm"):
+        depends_on('kokkos +rocm')
+        conflicts('+cuda')
+    with when("+cuda"):
+        depends_on('cuda')
+        conflicts('+rocm')
+        depends_on("kokkos +cuda", when="+kokkos")
+
     depends_on('netcdf-c +hdf4') # hdf4 for MPAS
     depends_on('netcdf-cxx4', when='+netcdf')
     depends_on('parallel-netcdf', when='+pnetcdf')
@@ -91,12 +104,14 @@ class Vistle(HlrsCMakePackage):
     depends_on('lz4')
     depends_on('snappy')
 
-    depends_on('zlib-api')
-    depends_on('libzip')
-    depends_on('libarchive')
+    with when("+foam"):
+        depends_on('zlib-api')
+        depends_on('libzip')
+        depends_on('libarchive')
 
-    depends_on('vtk', when='+vtk')
-    depends_on('tinyxml2', when='+vtk')
+    with when("+vtk"):
+        depends_on('vtk')
+        depends_on('tinyxml2')
 
     depends_on('assimp', when='+assimp')
 
@@ -156,7 +171,12 @@ class Vistle(HlrsCMakePackage):
             ])
 
         args.append(self.define('VISTLE_INTERNAL_BOOST_MPI', not spec.satisfies('+boostmpi')))
+        args.append(self.define('VISTLE_INTERNAL_BOOST_MPI', not spec.satisfies('+boostmpi')))
         args.append(self.define('VISTLE_INTERNAL_VTKM', not spec.satisfies('+vtkm')))
+        if not spec.satisfies('+vtkm'):
+            args.append(self.define_from_variant('VISTLE_USE_CUDA', 'cuda'))
+            use_kokkos = spec.satisfies("+kokkos") or spec.satisfies("+rocm")
+            args.append(self.define('VISTLE_USE_KOKKOS', use_kokkos))
 
         args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
         args.append(self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'))
