@@ -102,7 +102,7 @@ class Vistle(HlrsCMakePackage):
 
     depends_on('zstd')
     depends_on('lz4')
-    depends_on('snappy')
+    depends_on('snappy', when='@:2024')
 
     with when("+foam"):
         depends_on('zlib-api')
