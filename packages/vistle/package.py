@@ -5,11 +5,10 @@
 
 from spack.package import *
 
-from .opencover import HlrsCMakePackage
-
-class Vistle(HlrsCMakePackage):
+class Vistle(CMakePackage):
     """Vistle is a tool for visualization of scientific data in VR.
 
+    This package does not include the VR features.
     Notable features are distributed workflows and low-latency remote
     visualization."""
 
@@ -43,7 +42,6 @@ class Vistle(HlrsCMakePackage):
     variant('hdf5', default=True, description='Enable reading of HDF5 based data formats')
     variant('xdmf', default=False, description='Enable reading of SeisSol data')
     variant('osg', default=True, description='Build renderer relying on OpenSceneGraph')
-    variant('vr', default=True, description='Build virtual environment render module based on OpenCOVER')
     variant('assimp', default=True, description='Enable reading of polygonal models (.obj, .stl, ...)')
     variant('proj', default=True, description='Enable MapDrape module for carthographic coordinate mappings')
     variant('gdal', default=True, description='Enable IsoHeightSurface module for carthographic coordinate mappings')
@@ -55,7 +53,7 @@ class Vistle(HlrsCMakePackage):
 
     variant('static', default=False, description='Do not build shared libraries')
     variant('dev', default=True, description='Install internal 3rd party dependencies for linking to Vistle')
-    variant('boostmpi', default=True, description='Do not use internal copy of Boost.MPI')
+    variant('boostmpi', default=False, description='Do not use internal copy of Boost.MPI')
     variant('cuda', default=False, description='Build with CUDA')
     variant('vtkm', default=True, description='Do not use internal copy of VTK-m')
     variant('kokkos', default=False, description='Use Kokkos backend for internal VTK-m', when='~vtkm')
@@ -131,19 +129,9 @@ class Vistle(HlrsCMakePackage):
 
     with when("+qt5"):
         depends_on('qt', when='+qt')
-        depends_on('qt', when='+vr')
     with when("~qt5"):
         depends_on('qt-base', when='+qt')
-        depends_on('qt-base', when='+vr')
         depends_on('qt-svg', when='+qt', type="run")
-
-    with when("+vr"):
-        depends_on('cover@2024.1:', when="@2024.1:")
-        depends_on('cover@2023.9:', when="@2023.9:")
-        depends_on('cover@2021.9:')
-        depends_on('cover+mpi')
-        depends_on('cover+qt5', when="+qt5")
-        depends_on('cover~qt5', when="~qt5")
 
     def setup_build_environment(self, env):
         """Remove environment variables that let CMake find packages outside the spack tree."""
@@ -163,7 +151,6 @@ class Vistle(HlrsCMakePackage):
         args = []
 
         args.append('-DVISTLE_PEDANTIC_ERRORS=OFF')
-        args.append('-DCOVISE_ARCHSUFFIX=spack')
 
         if '+static' in spec:
             args.extend([
@@ -171,7 +158,6 @@ class Vistle(HlrsCMakePackage):
                 '-DVISTLE_MODULES_SHARED=OFF'
             ])
 
-        args.append(self.define('VISTLE_INTERNAL_BOOST_MPI', not spec.satisfies('+boostmpi')))
         args.append(self.define('VISTLE_INTERNAL_BOOST_MPI', not spec.satisfies('+boostmpi')))
         args.append(self.define('VISTLE_INTERNAL_VTKM', not spec.satisfies('+vtkm')))
         if not spec.satisfies('+vtkm'):
@@ -185,13 +171,4 @@ class Vistle(HlrsCMakePackage):
 
         args.append(self.define_from_variant('VISTLE_INSTALL_3RDPARTY', 'dev'))
 
-        args.append(self.define_from_variant("VISTLE_USE_QT5", "qt5"))
-        if not '+qt' in spec and not '+vr' in spec:
-            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
-            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
-        elif '+qt5' in spec:
-            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Core=TRUE')
-        else:
-            args.append('-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE')
-
-        return self.cmake_disable_implicit_deps(args)
+        return args
