@@ -5,7 +5,7 @@
 
 from spack.package import *
 
-class Vistle(CMakePackage):
+class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     """Vistle is a tool for visualization of scientific data in VR.
 
     This package does not include the VR features.
@@ -77,11 +77,29 @@ class Vistle(CMakePackage):
     depends_on('boost+atomic+thread+exception+log+locale+math+random+timer+filesystem+date_time+program_options+serialization+system+iostreams+chrono+regex@1.59:')
     depends_on('boost+pic', when='+static')
     depends_on('boost+mpi', when='+boostmpi')
+    depends_on('fmt')
 
     with when("+vtkm"):
         depends_on('vtk-m@2 +fpic')
         depends_on("vtk-m +64bitids", when="+large")
         depends_on("vtk-m ~64bitids", when="~large")
+        conflicts("+kokkos")
+
+    depends_on("kokkos +rocm", when="+kokkos +rocm")
+    # Propagate AMD GPU target to kokkos for +rocm
+    for amdgpu_value in ROCmPackage.amdgpu_targets:
+        depends_on(
+                "kokkos amdgpu_target=%s" % amdgpu_value,
+                when="+kokkos +rocm amdgpu_target=%s" % amdgpu_value,
+                )
+
+    depends_on("hip@3.7:", when="+rocm")
+    # CUDA thrust is already include in the CUDA pkg
+    depends_on("rocthrust", when="@2.1: +kokkos+rocm")
+
+    conflicts("+rocm", when="+cuda")
+    conflicts("+rocm", when="~kokkos", msg="VTK-m does not support HIP without Kokkos")
+    #conflicts("+rocm", when="+virtuals", msg="VTK-m does not support virtual functions with ROCm")
 
     with when("+rocm"):
         depends_on('kokkos +rocm')
@@ -164,6 +182,10 @@ class Vistle(CMakePackage):
             args.append(self.define_from_variant('VISTLE_USE_CUDA', 'cuda'))
             use_kokkos = spec.satisfies("+kokkos") or spec.satisfies("+rocm")
             args.append(self.define('VISTLE_USE_KOKKOS', use_kokkos))
+
+            # hip support
+            if "+rocm" in spec:
+                args.append(self.builder.define_hip_architectures(self))
 
         args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
         args.append(self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'))
