@@ -30,11 +30,12 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     version('2020.1', tag='v2020.1', submodules=True)
     version('2019.9', tag='v2019.9', submodules=True)
 
-    variant('embree', default=True, description='Enable remote rendering')
     variant('python', default=True, description='Enable Python support')
+    variant('tui', default=True, description='Install interactive command line interface')
+    variant('catalyst', default=False, description='Enable in-situ simulation interface')
     variant('qt', default=True, description='Build graphical workflow editor relying on Qt')
     variant('qt5', default=False, description='Build graphical workflow editor relying on Qt 5')
-    variant('tui', default=True, description='Install interactive command line ineterface')
+    variant('embree', default=True, description='Enable remote rendering')
     variant('vtk', default=True, description='Enable reading VTK data')
     variant('foam', default=True, description='Enable reading OpenFOAM data')
     variant('netcdf', default=True, description='Enable reading of WRF data')
@@ -78,6 +79,8 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     depends_on('boost+pic', when='+static')
     depends_on('boost+mpi', when='+boostmpi')
     depends_on('fmt')
+
+    depends_on("libcatalyst +conduit", when="+catalyst")
 
     with when("+vtkm"):
         depends_on('vtk-m@2 +fpic')
