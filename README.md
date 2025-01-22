@@ -17,4 +17,4 @@ Now you can install
 * [COVISE](https://www.hlrs.de/covise/) including OpenCOVER: `spack install covise`
 * [OpenCOVER](https://www.hlrs.de/opencover/) only: `spack install opencover`
 * [OddLOT](https://www.hlrs.de/oddlot/) only: `spack install oddlot`
-* [Vistle](https://vistle.io): `spack install vistle`
+* [Vistle](https://vistle.io): `spack install vistle-vr` for a full-featured client installation, `spack install vistle` for a server-only installation
