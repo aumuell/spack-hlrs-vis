@@ -70,6 +70,7 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
 
     depends_on('python@2.7:', when='+python', type=('build', 'link', 'run'))
     depends_on('py-installer', when='+python+xdmf', type=('build'))
+    conflicts('+tui', '~python', msg='Python is required to interpret user input')
     depends_on('py-ipython', when='+tui', type=('run'))
 
     depends_on('mpi')
@@ -164,6 +165,8 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
 
     def setup_run_environment(self, env):
         env.set('VISTLE_ROOT', self.prefix)
+        if self.spec.satisfies('+python'):
+            env.prepend_path("PYTHONPATH", self.prefix.lib)
 
     def cmake_args(self):
         """Populate cmake arguments for Vistle."""
