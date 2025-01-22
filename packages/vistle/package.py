@@ -59,12 +59,15 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     variant('vtkm', default=True, description='Do not use internal copy of VTK-m')
     variant('kokkos', default=False, description='Use Kokkos backend for internal VTK-m', when='~vtkm')
     variant('rocm', default=False, description='Use rocm-enabled Kokkos backend for internal VTK-m', when='~vtkm')
+    variant('openmp', default=True, description='Use OpenMP (including within Kokkos)')
 
     conflicts('%gcc@:4.99')
     depends_on('cmake@3.3:', type='build')
     depends_on('git', type='build')
 
-    depends_on('llvm-openmp', when='platform=darwin')
+    with when("+openmp"):
+        depends_on('llvm-openmp', when='platform=darwin')
+    depends_on('tbb', when="~openmp")
 
     extends('python', when='+python')
 
@@ -118,8 +121,6 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     depends_on('parallel-netcdf', when='+pnetcdf')
     depends_on('hdf5', when='+hdf5')
     depends_on('xdmf3', when='+xdmf')
-
-    depends_on('tbb')
 
     depends_on('zstd')
     depends_on('lz4')
@@ -192,6 +193,8 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
             # hip support
             if "+rocm" in spec:
                 args.append(self.builder.define_hip_architectures(self))
+
+        args.append(self.define_from_variant('VISTLE_USE_OPENMP', 'openmp'))
 
         args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
         args.append(self.define_from_variant('VISTLE_DOUBLE_PRECISION', 'double'))
