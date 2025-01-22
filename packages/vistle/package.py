@@ -19,7 +19,7 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
     maintainers = ['aumuell']
 
     version('master', branch='master', submodules=True)
-    version("2025.1", sha256="ebeae5a24e86e284877b8e4bfe73feceeaba979372beffab8685216cf043f12b")
+    version("2025.1", sha256="dff98a584006ad5096694d3b16d35f545a9393afd4d35a76edce72e7a87a2a9f")
     version("2024.2", sha256="1d2959ea56b6e8fcf617f9772f34801c66ce7b86e0d61dbe2813a1b6c7e16b18")
     version("2024.1.1", sha256="2bf644061d85dcc0e09b9af244da2795bcbb74e586ef35552f856d1ffbfbdc7f")
     version("2023.9", sha256="6ab328c3bb1ffb2763823792376be6b373eb5d81315771aa22746b489a0721b2")
