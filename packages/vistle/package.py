@@ -194,6 +194,25 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
             if "+rocm" in spec:
                 args.append(self.builder.define_hip_architectures(self))
 
+        # Use hipcc as the c compiler if we are compiling for rocm. Doing it this way
+        # keeps the wrapper insted of changeing CMAKE_CXX_COMPILER keeps the spack wrapper
+        # and the rpaths it sets for us from the underlying spec.
+        if self.spec.satisfies("+rocm"):
+            env["SPACK_CXX"] = self.spec["hip"].hipcc
+
+        # If we're building with cray mpich, we need to make sure we get the GTL library for
+        # gpu-aware MPI, since cabana and beatnik require it
+        if self.spec.satisfies("+rocm ^cray-mpich"):
+            gtl_dir = join_path(self.spec["cray-mpich"].prefix, "..", "..", "..", "gtl", "lib")
+            args.append(
+                "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath={0} -L{0} -lmpi_gtl_hsa".format(gtl_dir)
+            )
+        elif self.spec.satisfies("+cuda ^cray-mpich"):
+            gtl_dir = join_path(self.spec["cray-mpich"].prefix, "..", "..", "..", "gtl", "lib")
+            args.append(
+                "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath={0} -L{0} -lmpi_gtl_cuda".format(gtl_dir)
+            )
+
         args.append(self.define_from_variant('VISTLE_USE_OPENMP', 'openmp'))
 
         args.append(self.define_from_variant('VISTLE_MULTI_PROCESS', 'multi'))
