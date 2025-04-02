@@ -202,15 +202,13 @@ class Vistle(CMakePackage, ROCmPackage, CudaPackage):
 
         # If we're building with cray mpich, we need to make sure we get the GTL library for
         # gpu-aware MPI, since cabana and beatnik require it
-        if self.spec.satisfies("+rocm ^cray-mpich"):
+        if self.spec.satisfies("^cray-mpich"):
             gtl_dir = join_path(self.spec["cray-mpich"].prefix, "..", "..", "..", "gtl", "lib")
+            gtl_arch = "hsa"
+            if self.spec.satisfies("+cuda"):
+                gtl_arch = "cuda"
             args.append(
-                "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath={0} -L{0} -lmpi_gtl_hsa".format(gtl_dir)
-            )
-        elif self.spec.satisfies("+cuda ^cray-mpich"):
-            gtl_dir = join_path(self.spec["cray-mpich"].prefix, "..", "..", "..", "gtl", "lib")
-            args.append(
-                "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath={0} -L{0} -lmpi_gtl_cuda".format(gtl_dir)
+                "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath={0} -L{0} -lmpi_gtl_{1}".format(gtl_dir, gtl_arch)
             )
 
         args.append(self.define_from_variant('VISTLE_USE_OPENMP', 'openmp'))
